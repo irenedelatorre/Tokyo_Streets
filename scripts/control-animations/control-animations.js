@@ -31,7 +31,6 @@ function createSlider(range) {
         .tickValues(years)
         .default(range[1])
         .on("onchange", () => plotSlider.dispatch("input"));
-
     const plotSlider = d3.select('#time-controls')
         .append('svg')
         .attr('width', widthSlider + margin.r + margin.l)
@@ -54,5 +53,12 @@ function createSlider(range) {
         .selectAll('.slider')
         .selectAll('text')
         .attr('y', 12);
+
+    plotSlider  
+        .selectAll('.parameter-value')
+        .select('path')
+        .attr('d', 'M-2.83-2.83h0A4,4,0,0,1,0-4,4,4,0,0,1,2.83-2.83h0A4,4,0,0,1,4,0,4,4,0,0,1,2.83,2.83h0A4,4,0,0,1,0,4,4,4,0,0,1-2.83,2.83h0A4,4,0,0,1-4,0,4,4,0,0,1-2.83-2.83Z')
+        .style('fill', '#e02e0b')
+        .style('stroke', 'none');
 
 }
