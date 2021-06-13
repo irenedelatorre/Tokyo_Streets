@@ -7,25 +7,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="./css/style.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="./css/app.css" rel="stylesheet"/>
+    <link href="./css/control-animation.css" rel="stylesheet"/>
 </head>
 <body>
-    <nav></nav>
+    <nav>
+        <h1>Tokyo Streets</h1>
+    </nav>
     <div class="container-fluid">
         <div class="row">
             <div class="charts col-md-4">
-                <div class="row animation-controls"></div>
-                <div class="row meters-time"></div>
-                <div class="row by-district"></div>
+                <div class="row animation-controls">
+                    <p><span><img class="hand" src="./assets/img/hand.svg"></img></span>Use animation controls to select a specific date</p>
+                    <div class="buttons">
+                        <button id="skip_previous">
+                            <span class="material-icons">skip_previous</span>
+                        </button>
+                        <button id="play">
+                            <span class="material-icons">play_arrow</span>
+                        </button>
+                        <button id="skip_next">
+                            <span class="material-icons">skip_next</span>
+                        </button>
+                        <div id="time-controls"></div>
+                    </div>
+                </div>
+                <div class="row meters-time">
+                    <h2>Total walkable meters over time</h2>
+                    <p><span><img class="hand" src="./assets/img/hand.svg"></img></span>Drag time line to select a specific date</p>
+                </div>
+                <div class="row by-district">
+                    <h2>Walkability by district <span id="walkability-date"></span></h2>
+                </div>
             </div>
             <div class="map col-md-8"></div>
         </div>
     </div>
 <script src="./libraries/d3.v7.min.js"></script>
+<script src="./libraries/d3-simple-slider.min.js"></script>
 <!-- <script src="https://d3js.org/d3-geo.v1.min.js"></script> -->
 <!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
 <!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->
 <script src="./scripts/parseData.js"></script>
+<script src="./scripts/control-animations/control-animations.js"></script>
 <script src="./scripts/app.js"></script>
 </body>
 </html>
