@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tokyo Streets</title>
+    <meta name="author" content="University of Tokyo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet"/>
+</head>
+<body>
+    <nav></nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="charts col-md-4">
+                <div class="row animation-controls"></div>
+                <div class="row meters-time"></div>
+                <div class="row by-district"></div>
+            </div>
+            <div class="map col-md-8"></div>
+        </div>
+    </div>
+<script src="./libraries/d3.v7.min.js"></script>
+<!-- <script src="https://d3js.org/d3-geo.v1.min.js"></script> -->
+<!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
+<!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->
+<script src="./scripts/parseData.js"></script>
+<script src="./scripts/app.js"></script>
+</body>
+</html>
