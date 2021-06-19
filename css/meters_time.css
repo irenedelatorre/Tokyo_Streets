@@ -1,0 +1,47 @@
+#meters-time-plot {
+    min-height: 210px;
+    padding: 0;
+}
+
+#meters-time-plot .axis text {
+    font-size: 14px;
+    line-height: 17px;
+}
+
+#meters-time-plot .axis-y text {
+    color: #656565;
+}
+
+#meters-time-plot .axis-x text {
+    color: #222222;
+}
+
+
+#meters-time-plot .axis-y .domain {
+    display: none;
+}
+
+#meters-time-plot .axis-y line {
+    stroke: #EBEBEB;
+    mix-blend-mode: multiply;
+    stroke-width: 1px;
+    stroke-dasharray: 2px;
+}
+
+#meters-time-plot .area path {
+    fill: #E02E0B;
+    stroke: none;
+    opacity: 0.2;
+    mix-blend-mode: multiply;
+}
+
+#meters-time-plot .timeLine line {
+    stroke: #E02E0B;
+    stroke-width: 2px;
+}
+
+#meters-time-plot .timeLine text {
+    font-size: 16px;
+    font-weight: bold;
+    text-anchor: middle;
+}

@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="./css/app.css" rel="stylesheet"/>
     <link href="./css/control-animation.css" rel="stylesheet"/>
+    <link href="./css/meters_time.css" rel="stylesheet"/>
 </head>
 <body>
     <nav>
@@ -36,6 +37,7 @@
                 <div class="row meters-time">
                     <h2>Total walkable meters over time</h2>
                     <p><span><img class="hand" src="./assets/img/hand.svg"></img></span>Drag time line to select a specific date</p>
+                    <div id='meters-time-plot'></div>
                 </div>
                 <div class="row by-district">
                     <h2>Walkability by district <span id="walkability-date"></span></h2>
@@ -51,6 +53,7 @@
 <!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->
 <script src="./scripts/parseData.js"></script>
 <script src="./scripts/control-animations/control-animations.js"></script>
+<script src="./scripts/meters_time/meters_time.js"></script>
 <script src="./scripts/app.js"></script>
 </body>
 </html>
