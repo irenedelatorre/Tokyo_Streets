@@ -34,7 +34,7 @@ nav {
 
 /* container-fluid (charts and map) */
 .container-fluid {
-    padding: 2em;
+    padding: 1em 2em 2em 2em;
 }
 
 .charts div {

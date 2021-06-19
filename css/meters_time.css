@@ -1,6 +1,7 @@
 #meters-time-plot {
     min-height: 210px;
     padding: 0;
+    margin-bottom: 0;
 }
 
 #meters-time-plot .axis text {
