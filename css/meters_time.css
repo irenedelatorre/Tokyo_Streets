@@ -1,7 +1,7 @@
 #meters-time-plot {
     min-height: 210px;
     padding: 0;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 #meters-time-plot .axis text {
@@ -37,7 +37,7 @@
 }
 
 #meters-time-plot .timeLine line {
-    stroke: #E02E0B;
+    stroke: #222222;
     stroke-width: 2px;
 }
 

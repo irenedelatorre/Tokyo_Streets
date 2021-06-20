@@ -101,12 +101,15 @@ class meters_through_time {
     }
 
     timeLine(date) {
+        const format = d3.format(",");
+
         const scaleText = d3.scaleLinear()
-            .domain([0, this.width])
-            .range([20, this.width - 20]);
+            .domain([40, this.width - 30])
+            .range([40, this.width - 30])
+            .clamp(true);
 
         const formatDate = d3.timeFormat('%B %Y');
-            
+        console.log(formatDate(date));
         this.plotTimeLine
             .selectAll('line')
             .data([date])
@@ -114,13 +117,13 @@ class meters_through_time {
             .attr('x1', this.scaleX(date))
             .attr('y1', this.scaleY(0))
             .attr('x2', this.scaleX(date))
-            .attr('y2', this.scaleY(this.extentValue[1]));
+            .attr('y2', this.scaleY(this.extentValue[1]) - 5);
 
         this.plotTimeLine
             .selectAll('text')
             .data((this.data).filter(d => formatDate(d[0]) === formatDate(date)))
             .join('text')
-            .text(d => d[1])
+            .text(d => `${format(d[1])} m`)
             .attr('x', scaleText(this.scaleX(date)))
             .attr('y', this.scaleY(this.extentValue[1]) - this.margin.text);
     }

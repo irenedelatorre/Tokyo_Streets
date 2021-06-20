@@ -12,6 +12,11 @@ button {
     border: 0;
 }
 
+button:hover, button:focus {
+    color: #004E67;
+    /* background-color: #e02e0b; */
+}
+
 #play .material-icons {
     font-size: 2em;
 }
@@ -41,4 +46,8 @@ button {
 
 #time-controls .tick line {
     stroke: #222222;
+}
+
+.parameter-value:hover, .parameter-value:focus, .parameter-value path:hover, .parameter-value path:focus {
+    fill: #004E67 !important;
 }

@@ -12,13 +12,27 @@ class controlAnimation {
         this.width = document.getElementById('time-controls').clientWidth -this. margin.r - this.margin.l - 16;
         this.height = document.getElementById('time-controls').clientHeight - this.margin.t - this.margin.b;
         this.timePointSlider = range[1];
+        this.t = this.timePointSlider;
         this.areaChart = areaChart;
+        this.animation = false;
+        this.animationBtn = 'play';
+        this.playBtn = d3.select("#play");
+        this.frameRate = 10;
+
+        this.plotSlider = d3.select('#time-controls')
+            .append('svg')
+            .attr('width', this.width + this.margin.r + this.margin.l)
+            .attr('height', this.height + this.margin.t + this.margin.b)
+            .append('g', 'slider-years')
+            .attr('transform', `translate(${this.margin.l}, ${this.margin.t})`);
+
         this.createSlider();
+        this.playButton();
         console.log(areaChart)
     }
 
     createSlider() {
-        const sliderTime = d3.sliderBottom()
+        this.sliderTime = d3.sliderBottom()
             .min(this.range[0])
             .max(this.range[1])
             .marks(this.months)
@@ -36,95 +50,104 @@ class controlAnimation {
             .on("onchange", (d) => {
                 this.timePointSlider = d;
                 this.areaChart.timeLine(d);
-                plotSlider.dispatch("input")
+                this.plotSlider.dispatch("input")
             });
 
-        const plotSlider = d3.select('#time-controls')
-            .append('svg')
-            .attr('width', this.width + this.margin.r + this.margin.l)
-            .attr('height', this.height + this.margin.t + this.margin.b)
-            .append('g', 'slider-years')
-            .attr('transform', `translate(${this.margin.l}, ${this.margin.t})`)
-            .call(sliderTime);
+        this.plotSlider
+            .call(this.sliderTime);
 
-        plotSlider.selectAll('.tick')
+        this.plotSlider.selectAll('.tick')
             .selectAll('line')
             .attr('y1', -9)
             .attr('y2', -1);
 
-        plotSlider
+        this.plotSlider
             .selectAll('.tick')
             .selectAll('text')
             .attr('y', 5);
 
-        plotSlider
+        this.plotSlider
             .selectAll('.slider')
             .selectAll('text')
             .attr('y', 12);
 
-        plotSlider  
+        this.plotSlider  
             .selectAll('.parameter-value')
             .select('path')
             .attr('d', 'M-2.83-2.83h0A4,4,0,0,1,0-4,4,4,0,0,1,2.83-2.83h0A4,4,0,0,1,4,0,4,4,0,0,1,2.83,2.83h0A4,4,0,0,1,0,4,4,4,0,0,1-2.83,2.83h0A4,4,0,0,1-4,0,4,4,0,0,1-2.83-2.83Z')
             .style('fill', '#e02e0b')
             .style('stroke', 'none');
     }
+
+    playButton() {
+        
+        var newDate = new Date(this.range[0].setMonth(this.range[0].getMonth() + 1))
+        console.log(newDate);
+
+        this.playBtn
+            .on('click', d => {
+                const btn = this.playBtn
+                    .select('.material-icons');
+
+                if (this.animationBtn === 'play') {
+                    this.playBtn
+                        .select('.material-icons')
+                        .html('pause');
+
+                    this.animation = true;
+                    this.animationBtn = 'pause';
+
+                    // if starts from the last point go to beginning
+                    if (this.t >= this.range[1]) {
+                        this.t = this.range[0];
+                    } else {
+                        this.t = new Date(this.t.setMonth(this.t.getMonth() + 1))
+                    }
+
+                    // console.log( this.timePointSlider);
+                    this.timer = setInterval(() => this.step(), 1000)
+
+                } else if (this.animationBtn === 'pause') {
+                    this.playBtn
+                        .select('.material-icons')
+                        .html('play_arrow');
+
+                    this.animation = false;
+                    this.animationBtn = 'play';
+                    clearInterval(this.timer);
+                }
+
+                
+
+                console.log('play');
+            })
+    }
+
+    step() {
+        console.log(this.timePointSlider, this.t);
+        this.update();
+        // if it goes to the end of the animation
+        if (this.t >= this.range[1]) {
+            this.t = this.range[0];
+            this.animation = false;
+            this.animationBtn = 'play';
+
+            clearInterval(() => this.timer);
+            this.playBtn
+                .select('.material-icons')
+                .html('play_arrow');
+        } else {
+            this.t = new Date(this.t.setMonth(this.t.getMonth() + 1))
+        }
+    }
+ 
+    update() {
+        // update pos X of circle
+        // update label
+        // this.plotSlider
+        this.sliderTime
+            .value([this.t]);
+
+    }
+
 }
-
-
-// function createSlider(range, years, months) {
-
-
-//     // console.log(years, months);
-
-//     const sliderTime = d3.sliderBottom()
-//         .min(range[0])
-//         .max(range[1])
-//         .marks(months)
-//         .width(widthSlider)
-//         .tickFormat(d => {
-//             if (widthSlider < 300) {
-//                 return d3.timeFormat('%y')(d);
-//             } else {
-//                 return d3.timeFormat('%Y')(d);
-//             }
-
-//         })
-//         .tickValues(years)
-//         .default(range[1])
-//         .on("onchange", (d) => {
-//             console.log(d);
-//             plotSlider.dispatch("input")
-//         });
-
-//     const plotSlider = d3.select('#time-controls')
-//         .append('svg')
-//         .attr('width', widthSlider + margin.r + margin.l)
-//         .attr('height', heightSlider + margin.t + margin.b)
-//         .append('g', 'slider-years')
-//         .attr('transform', `translate(${margin.l}, ${margin.t})`)
-//         .call(sliderTime);
-
-//     plotSlider.selectAll('.tick')
-//         .selectAll('line')
-//         .attr('y1', -9)
-//         .attr('y2', -1);
-
-//     plotSlider
-//         .selectAll('.tick')
-//         .selectAll('text')
-//         .attr('y', 5);
-
-//     plotSlider
-//         .selectAll('.slider')
-//         .selectAll('text')
-//         .attr('y', 12);
-
-//     plotSlider  
-//         .selectAll('.parameter-value')
-//         .select('path')
-//         .attr('d', 'M-2.83-2.83h0A4,4,0,0,1,0-4,4,4,0,0,1,2.83-2.83h0A4,4,0,0,1,4,0,4,4,0,0,1,2.83,2.83h0A4,4,0,0,1,0,4,4,4,0,0,1-2.83,2.83h0A4,4,0,0,1-4,0,4,4,0,0,1-2.83-2.83Z')
-//         .style('fill', '#e02e0b')
-//         .style('stroke', 'none');
-
-// }
