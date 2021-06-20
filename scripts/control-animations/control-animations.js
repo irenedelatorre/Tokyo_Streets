@@ -16,6 +16,8 @@ class controlAnimation {
         this.areaChart = areaChart;
         this.animation = false;
         this.animationBtn = 'play';
+        this.nextBtn = d3.select('#skip_next');
+        this.previousBtn = d3.select('#skip_previous');
         this.playBtn = d3.select("#play");
         this.frameRate = 10;
 
@@ -28,6 +30,8 @@ class controlAnimation {
 
         this.createSlider();
         this.playButton();
+        this.nextButton();
+        this.previousButton();
         console.log(areaChart)
     }
 
@@ -47,10 +51,22 @@ class controlAnimation {
             })
             .tickValues(this.years)
             .default(this.range[1])
+            .on("drag", (d) => {
+                this.t = d;
+                if (this.animation === true) {
+                    this.animation === false;
+                    this.animationBtn = 'play';
+                    this.playBtn
+                        .select('.material-icons')
+                        .html('play_arrow');
+                    clearInterval(this.timer);
+
+                }
+            })
             .on("onchange", (d) => {
                 this.timePointSlider = d;
                 this.areaChart.timeLine(d);
-                this.plotSlider.dispatch("input")
+                this.plotSlider.dispatch("input");
             });
 
         this.plotSlider
@@ -80,9 +96,6 @@ class controlAnimation {
     }
 
     playButton() {
-        
-        var newDate = new Date(this.range[0].setMonth(this.range[0].getMonth() + 1))
-        console.log(newDate);
 
         this.playBtn
             .on('click', d => {
@@ -116,10 +129,36 @@ class controlAnimation {
                     this.animationBtn = 'play';
                     clearInterval(this.timer);
                 }
+            })
+    }
 
+    nextButton() {
+        this.nextBtn
+            .on('click', d => {
+                const btn = this.playBtn
+                    .select('.material-icons');
                 
+                if (this.animation === true){
+                    this.t = this.range[1];
+                } else {
+                    this.t = new Date(this.t.setMonth(this.t.getMonth() + 1));
+                    this.update();
+                }
+            })
+    }
 
-                console.log('play');
+    previousButton() {
+        this.previousBtn
+            .on('click', d => {
+                const btn = this.playBtn
+                    .select('.material-icons');
+                
+                if (this.animation === true){
+                    this.t = this.range[0];
+                } else {
+                    this.t = new Date(this.t.setMonth(this.t.getMonth() - 1));
+                    this.update();
+                }
             })
     }
 
@@ -132,7 +171,7 @@ class controlAnimation {
             this.animation = false;
             this.animationBtn = 'play';
 
-            clearInterval(() => this.timer);
+            clearInterval(this.timer);
             this.playBtn
                 .select('.material-icons')
                 .html('play_arrow');
@@ -144,10 +183,8 @@ class controlAnimation {
     update() {
         // update pos X of circle
         // update label
-        // this.plotSlider
         this.sliderTime
             .value([this.t]);
-
     }
 
 }
