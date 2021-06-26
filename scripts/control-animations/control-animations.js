@@ -1,5 +1,5 @@
 class controlAnimation {
-    constructor(range, years, months, areaChart) {
+    constructor(range, years, months, areaChart, table) {
         this.range = range;
         this.years = years;
         this.months = months;
@@ -14,6 +14,7 @@ class controlAnimation {
         this.timePointSlider = range[1];
         this.t = this.timePointSlider;
         this.areaChart = areaChart;
+        this.table = table;
         this.animation = false;
         this.animationBtn = 'play';
         this.nextBtn = d3.select('#skip_next');
@@ -66,6 +67,7 @@ class controlAnimation {
             .on("onchange", (d) => {
                 this.timePointSlider = d;
                 this.areaChart.timeLine(d);
+                this.table.update(d);
                 this.plotSlider.dispatch("input");
             });
 
@@ -134,8 +136,6 @@ class controlAnimation {
     nextButton() {
         this.nextBtn
             .on('click', d => {
-                const btn = this.playBtn
-                    .select('.material-icons');
                 
                 if (this.animation === true){
                     this.t = this.range[1];
@@ -149,8 +149,6 @@ class controlAnimation {
     previousButton() {
         this.previousBtn
             .on('click', d => {
-                const btn = this.playBtn
-                    .select('.material-icons');
                 
                 if (this.animation === true){
                     this.t = this.range[0];

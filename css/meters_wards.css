@@ -1,3 +1,12 @@
+.table-divs {
+    margin: 0 0 1em 0 !important;
+    padding: 0 !important;
+    overflow-y: scroll;
+    height: 250px;
+    border-bottom: 1px solid black;
+    box-shadow: inset 0px -5px #0000001f;
+}
+
 .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
     border-top: none !important;
     border-bottom: none !important;
@@ -17,12 +26,50 @@ thead {
     margin-bottom: 0.5em;
 }
 
+thead tr {
+    position: sticky;
+    background-color: white;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    box-shadow: 0 5px #0000001f;
+}
+
 .table .th-sm {
-    color: #E02E0B;
     border-left: none;
     border-right: none;
     padding-bottom: 0.5em;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: white;
 }
+
+.table .th-sm a {
+    display: flex;
+    cursor: pointer;
+}
+
+.table .th-sm a svg {
+    margin-right: 0.25em;
+    margin-top: -2px;
+}
+
+.th-sm a svg .icon-btn {
+    fill:#e02e0b;
+}
+
+
+.th-sm a:hover .icon-btn {
+    fill: #004E67;
+}
+
 
 tbody .name {
     border-left: none !important;
@@ -40,6 +87,11 @@ tbody .svg{
 tbody .meters {
     border-right: none !important;
     text-align: right;
+}
+
+thead #barchart-head {
+    max-width: 200px;
+    min-width: 100px;
 }
 
 #meters-by-district-plot .axis-x text {
@@ -69,7 +121,19 @@ tbody .meters {
     display: none;
 }
 
- tbody .row:after, .row:before {
+tbody .row {
+    mix-blend-mode: multiply;
+}
+
+tbody .row:after, .row:before {
     /* display: table; */
     content: none;
+}
+
+#t-perc, #t-meters {
+    justify-content: flex-end;
+}
+
+.disabled {
+    opacity: 0.5;
 }

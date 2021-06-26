@@ -19,7 +19,7 @@ const parse = {
         }
     },
 
-    wards_meters : function(values, wards) {
+    wards_meters : function(values, wards, formatTime) {
 
         const dates = d3.groupSort(values,
             d => d.date,
@@ -58,7 +58,8 @@ const parse = {
                     if (meters > max) max = meters;
                     // console.log(thisValue)
                 }
-                groupByWard[j][thisDate] = meters;
+                const thisT = formatTime(thisDate);
+                groupByWard[j][thisT] = meters;
             }
         }
 

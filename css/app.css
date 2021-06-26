@@ -26,6 +26,14 @@ p {
     margin: 0 0 0.5em;
 }
 
+a {
+    color: #E02E0B !important;
+}
+
+a:hover, a:focus {
+    color: #004E67 !important;
+}
+
 /* NAV */
 nav {
     background-color: #E02E0B;
@@ -54,5 +62,5 @@ nav {
 }
 
 div {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }

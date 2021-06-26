@@ -6,7 +6,6 @@
     <meta name="author" content="University of Tokyo">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/bootstrap-table.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="./css/app.css" rel="stylesheet"/>
@@ -54,27 +53,57 @@
                 </div>
                 <div class="row by-district">
                     <h2>Walkability by district <span id="walkability-date"></span></h2>
-                    <table id="meters-by-district-table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="th-sm"><a id ='t-ward'>Ward</a></th>
-                                <th class="th-sm"><a id = 't-perc'>%</a></th>
-                                <th class="th-sm"><a id ="barchart-head"></a>Test</th>
-                                <th class="th-sm"><a id = "t-meters">Meters</a></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-divs">
+                        <table id="meters-by-district-table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="th-sm">
+                                        <a id ='t-ward' sort="asc" active="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" transform="scale(1,-1)" style="opacity: 0.5">
+                                                <path d="M0 0h24v24H0z" fill="none"/>
+                                                <path class="icon-btn" d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+                                            </svg>
+                                            Ward
+                                        </a>
+                                    </th>
+                                    <th class="th-sm">
+                                        <a id = 't-perc' sort="desc" active="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" transform="scale(1,-1)">
+                                                <path d="M0 0h24v24H0z" fill="none"/>
+                                                <path class="icon-btn" d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+                                            </svg>
+                                            %
+                                        </a>
+                                    </th>
+                                    <th class="th-sm">
+                                        <a id ="barchart-head">
+    
+                                        </a>
+                                        <!-- Test -->
+                                    </th>
+                                    <th class="th-sm">
+                                        <a id = "t-meters" sort="desc" active="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" transform="scale(1,-1)" style="opacity: 0.5">
+                                                <path d="M0 0h24v24H0z" fill="none"/>
+                                                <path class="icon-btn" d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+                                            </svg>
+                                            Meters
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <p>*Calculated over the maximum number of walkable meters</p>
                     <!-- <div id="meters-by-district-plot"></div> -->
                 </div>
             </div>
             <div class="map col-md-8"></div>
         </div>
     </div>
-    <script src="./libraries/jquery-3.6.0.min.js"></script>
     <script src="./libraries/d3.v7.min.js"></script>
     <script src="./libraries/d3-simple-slider.min.js"></script>
-    <script src="./libraries/bootstrap-table.min.js"></script>
     <!-- <script src="https://d3js.org/d3-geo.v1.min.js"></script> -->
     <!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
     <!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->

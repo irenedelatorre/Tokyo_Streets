@@ -20,8 +20,9 @@ Promise.all([
     const groupedByDate = d3.rollups(values,
         v => d3.sum(v, d => Math.round(d.value)),
         d => d.date);
+    console.log(groupedByDate);
 
-    const wardsMeters = parse.wards_meters(values, wards);
+    const wardsMeters = parse.wards_meters(values, wards, formatTime);
 
     // 0 COLORS
     const scaleColor = d3.scaleThreshold()
@@ -33,12 +34,12 @@ Promise.all([
 
     // 2 CREATE BAR CHART ---
     // needs time range from values
-    const barChart = new meters_by_wards(wardsMeters, dateExtent, scaleColor);
+    const table = new meters_by_wards(wardsMeters, dateExtent, scaleColor, formatTime);
 
     // 3 CREATE SLIDER ----
     // needs time range from values
     // it will modify the other charts
-    const slider = new controlAnimation(dateExtent, years, months, areaChart);
+    const slider = new controlAnimation(dateExtent, years, months, areaChart, table);
 
 
     

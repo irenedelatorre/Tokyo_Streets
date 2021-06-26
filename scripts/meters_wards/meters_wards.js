@@ -1,16 +1,17 @@
 class meters_by_wards {
-    constructor(data, extentDate, scaleColor) {
+    constructor(data, extentDate, scaleColor, formatTime) {
         this.data = data[0];
         this.max = data[1];
         this.extentDate = extentDate;
+        this.formatTime = formatTime;
         this.margin = {
             t: 1.5,
             b: 1.5
         };
         this.scaleColor = scaleColor;
         this.format = d3.format(",");
-
-        this.t = this.extentDate[1];
+        console.log(this.data)
+        this.t = formatTime(this.extentDate[1]);
         this.dateSummary = (Array.from(this.data, (d) => {
             return {
                 key: d[0],
@@ -19,12 +20,11 @@ class meters_by_wards {
         })
         ).sort((a,b) => b.value - a.value);
 
-        console.log(this.dateSummary)
         this.wards = this.dateSummary.map(d => d.key);
 
         this.table = d3.select("#meters-by-district-table").selectAll('tbody');
 
-        this.width = 50; // document.getElementById('barchart-head').clientWidth;
+        this.width = document.getElementById('barchart-head').clientWidth;
         this.height = 20 - this.margin.t - this.margin.b;
         this.scaleX = d3.scaleLinear()
             .domain([0, this.max]).nice()
@@ -33,9 +33,13 @@ class meters_by_wards {
         this.table_ward = d3.select('#t-ward');
         this.table_perc = d3.select('#t-perc');
         this.table_chart = d3.select('#barchart-head');
-        this.table_ward = d3.select('#t-ward');
+        this.table_meters = d3.select('#t-meters');
 
-        this.createTable();
+        this.createTable(this.t);
+        this.table_ward_btn();
+        this.table_perc_btn();
+        this.table_meters_btn();
+
         // // svg
         // this.plot = d3.select('#meters-by-district-plot')
         //     .append('svg')
@@ -47,7 +51,24 @@ class meters_by_wards {
 
     }
 
+    update(t) {
+        this.t = this.formatTime(t);
+
+        this.dateSummary = (Array.from(this.data, (d) => {
+                return {
+                    key: d[0],
+                    value: d[this.t]
+                }
+            })
+        ).sort((a,b) => b.value - a.value);
+
+        this.createTable();
+    }
+
     createTable() {
+        d3.select('#walkability-date')
+            .html(`(${this.t})`);
+            
         const thisRow = this.table
             .selectAll('.row')
             .data(this.dateSummary)
@@ -90,93 +111,118 @@ class meters_by_wards {
             .attr('width', d => this.scaleX(d.meters))
             .attr('height', this.height)
             .style('fill', d => this.scaleColor(100 * d.meters / this.max))
-
-        // thisRow
-        //     .selectAll('.perc')
-        //     .data(d => [d])
-        //     .join('td')
-        //     .attr('class', 'perc')
-        //     .html(d => Math.round(10000 * d.value / this.max) / 100);
-
-        // this.bars = thisRow
-        //     .selectAll('.bars')
-        //     .data(d => [d])
-        //     .join('td')
-        //     .attr('class', 'bars')
-        //     .selectAll('svg')
-        //     .data(d => [d])
-        //     .join('svg')
-        //     .call(this.createBar(d));
-
-        // thisRow
-        //     .selectAll('.meters')
-        //     .data(d => [d])
-        //     .join('td')
-        //     .attr('class', 'meters')
-        //     .html(d => d.value);
-    }
-    createBar(d) {
-
     }
 
-    createBarChart() {
-        // axis
-        const axisX = d3.axisTop(this.scaleX)
-            .tickPadding(8)
-            .tickSize(-this.height)
-            .ticks(5);
+    reset(id) {
     
-        const axisY = d3.axisLeft()
-            .scale(this.scaleY)
-            .ticks(6)
-            .tickPadding(5);
+        d3.selectAll(".th-sm")
+            .selectAll('a')
+            .attr('active', function (d) {
+                const thisId = d3.select(this).attr('id');
 
-        this.plot
-            .append('g')
-            .attr('class', 'axis axis-y')
-            .attr('transform', `translate(${this.margin.l}, ${this.margin.t})`);
+                d3.select(this)
+                    .selectAll('svg')
+                    .style('opacity', d => {
+                        if (thisId !== id) return 0.5;
+                        return 1;
+                    });
 
-        this.plotBars = this.plot
-            .append('g')
-            .attr('class', 'bars')
-            .attr('transform', `translate(${this.margin.l}, ${this.margin.t})`);
-
-        this.plot
-            .append('g')
-            .attr('class', 'axis axis-x')
-            .attr(
-                'transform',
-                `translate(${this.margin.l}, ${this.margin.t})`
-            );
-
-        this.plot
-            .selectAll('.axis-x')
-            .call(axisX);
-    
-        this.plot
-            .selectAll('.axis-y')
-            .call(axisY);
-
-        this.plotBars
-            .selectAll('rect')
-            .data(this.dateSummary)
-            .join("rect")
-            .style("fill", d => this.scaleColor(100 * d.value / this.max))
-            .attr("y", d => this.scaleY(d.key))
-            .attr("x", d => this.scaleX(0))
-            .attr("width", d => this.scaleX(d.value))
-            .attr("height", this.scaleY.bandwidth());
-
-        this.plotBars
-            .selectAll('text')
-            .data(this.dateSummary)
-            .join("text")
-            .style("fill", d => this.scaleColor(100 * d.value / this.max))
-            .attr("y", d => this.scaleY(d.key))
-            .attr("x", d => this.scaleX(0))
-            .attr("width", d => this.scaleX(d.value))
-            .attr("height", this.scaleY.bandwidth());
-
-    
+                if (thisId !== id) return 'false'; 
+            });
     }
+
+    sortIcon(plot, sort) {
+        console.log(sort);
+
+        if (sort === 'desc') {
+            plot
+                .select('svg')
+                .attr('transform', 'scale(1, 1)');
+        } else {
+            plot
+                .select('svg')
+                .attr('transform', 'scale(1, -1)');
+        }
+        
+    }
+
+    table_ward_btn() {
+        this.table_ward
+            .on('click', d => {
+                const status = this.table_ward.attr('active');
+                let sort = this.table_ward.attr('sort');
+
+                // reset all other btns
+                this.reset('t-ward')
+
+                if((status === 'false' && sort === 'asc') || (status === 'true' && sort === 'desc')) {
+                    this.dateSummary.sort((a, b) => d3.ascending(a.key, b.key));
+                    this.table_ward
+                        .attr('active', 'true')
+                        .attr('sort', 'asc');
+                    sort = 'asc';
+                } else if ((status === 'false' && sort === 'desc') || (status === 'true' && sort === 'asc')) {
+                    this.dateSummary.sort((a, b) => d3.descending(a.key, b.key));
+                    this.table_ward
+                        .attr('active', 'true')
+                        .attr('sort', 'desc');
+                    sort = 'desc';
+                }
+                this.createTable();
+                this.sortIcon(this.table_ward, sort);
+            })
+    }
+
+    table_perc_btn() {
+        this.table_perc
+            .on('click', d => {
+                const status = this.table_perc.attr('active');
+                let sort = this.table_perc.attr('sort');
+                // reset all other btns
+                this.reset('t-perc')
+
+                if((status === 'false' && sort === 'asc') || (status === 'true' && sort === 'desc')) {
+                    this.dateSummary.sort((a, b) => d3.ascending(a.value / this.max, b.value / this.max));
+                    this.table_perc
+                        .attr('active', 'true')
+                        .attr('sort', 'asc');
+                    sort = 'asc';
+                } else if ((status === 'false' && sort === 'desc') || (status === 'true' && sort === 'asc')) {
+                    this.dateSummary.sort((a, b) => d3.descending(a.value / this.max, b.value / this.max));
+                    this.table_perc
+                        .attr('active', 'true')
+                        .attr('sort', 'desc');
+                    sort = 'desc';
+                }
+                this.createTable();
+                this.sortIcon(this.table_perc, sort);
+            })
+    }
+
+    table_meters_btn() {
+        this.table_meters
+            .on('click', d => {
+                const status = this.table_meters.attr('active');
+                let sort = this.table_meters.attr('sort');
+                // reset all other btns
+                this.reset('t-meters')
+
+                if((status === 'false' && sort === 'asc') || (status === 'true' && sort === 'desc')) {
+                    this.dateSummary.sort((a, b) => d3.ascending(a.value, b.value));
+                    this.table_meters
+                        .attr('active', 'true')
+                        .attr('sort', 'asc');
+                    sort = 'asc';
+                } else if ((status === 'false' && sort === 'desc') || (status === 'true' && sort === 'asc')) {
+                    this.dateSummary.sort((a, b) => d3.descending(a.value, b.value));
+                    this.table_meters
+                        .attr('active', 'true')
+                        .attr('sort', 'desc');
+                    sort = 'desc';
+                }
+                this.createTable();
+                this.sortIcon(this.table_meters, sort);
+            })
+    }
+    
 }

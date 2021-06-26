@@ -1,5 +1,5 @@
 class meters_through_time {
-    constructor(data, extentDate, years, margin) {
+    constructor(data, extentDate, years) {
         this.data = data;
         this.extentDate = extentDate;
         this.margin = {
