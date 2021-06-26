@@ -1,0 +1,51 @@
+.buttons {
+    display: flex;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex-grow: 1;
+}
+
+button {
+    background-color: transparent;
+    border: 0;
+}
+
+.buttons svg .icon-btn {
+    fill: #e02e0b;
+}
+
+button:hover svg .icon-btn, button:focus svg .icon-btn {
+    fill: #004E67;
+    /* background-color: #e02e0b; */
+}
+
+#time-controls {
+    padding: 0 0 0 1em !important;
+    margin: 0 !important;
+    flex-grow: 50;
+}
+
+#time-controls svg text {
+    fill: #222222;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+}
+
+.track-inset {
+    display: none;
+}
+
+.track {
+    stroke: #D4D4D4;
+    mix-blend-mode: multiply;
+    stroke-linecap: square;
+    stroke-width: 5;
+}
+
+#time-controls .tick line {
+    stroke: #222222;
+}
+
+.parameter-value:hover, .parameter-value:focus, .parameter-value path:hover, .parameter-value path:focus {
+    fill: #004E67 !important;
+}

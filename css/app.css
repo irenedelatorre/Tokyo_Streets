@@ -1,0 +1,66 @@
+/* Main */
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 16px;
+    line-height: 1.375em;
+    color: #222222;
+    background: #F2F2F2;
+}
+
+h1 {
+    color: #FFFFFF;
+    font-weight: 900;
+    font-size: 1.75em;
+    line-height: 1.4em;
+    margin: 0;
+}
+
+h2 {
+    font-weight: 700;
+    font-size: 1.25em;
+    line-height: 1.75em;
+    margin: -0.35px 0 0.5em;
+}
+
+p {
+    margin: 0 0 0.5em;
+}
+
+a {
+    color: #E02E0B !important;
+}
+
+a:hover, a:focus {
+    color: #004E67 !important;
+}
+
+/* NAV */
+nav {
+    background-color: #E02E0B;
+    padding: 0.8em 2em;
+}
+
+/* container-fluid (charts and map) */
+.container-fluid {
+    padding: 1em 2em 2em 2em;
+}
+
+.charts div {
+    background-color: #FFFFFF;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.charts .hand {
+    padding-right: 0.5em;
+    margin-top: -7px;
+}
+
+/* Charts */
+.charts svg text {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+div {
+    /* border: 1px solid black; */
+}

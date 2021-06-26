@@ -1,0 +1,139 @@
+.table-divs {
+    margin: 0 0 1em 0 !important;
+    padding: 0 !important;
+    overflow-y: scroll;
+    height: 250px;
+    border-bottom: 1px solid black;
+    box-shadow: inset 0px -5px #0000001f;
+}
+
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+    border-top: none !important;
+    border-bottom: none !important;
+    font-size: 1em;
+    color: #222;
+    padding: 0 0.5em;
+    line-height: 1.25em;
+}
+
+.table-bordered {
+    border: none !important;
+}
+
+thead {
+    padding-bottom: 0.5em !important;
+    border-bottom: 1px solid #d4d4d4 !important;
+    margin-bottom: 0.5em;
+}
+
+thead tr {
+    position: sticky;
+    background-color: white;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    box-shadow: 0 5px #0000001f;
+}
+
+.table .th-sm {
+    border-left: none;
+    border-right: none;
+    padding-bottom: 0.5em;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: white;
+}
+
+.table .th-sm a {
+    display: flex;
+    cursor: pointer;
+}
+
+.table .th-sm a svg {
+    margin-right: 0.25em;
+    margin-top: -2px;
+}
+
+.th-sm a svg .icon-btn {
+    fill:#e02e0b;
+}
+
+
+.th-sm a:hover .icon-btn {
+    fill: #004E67;
+}
+
+
+tbody .name {
+    border-left: none !important;
+}
+
+tbody .perc {
+    border-right: 1px solid #222222 !important;
+    text-align: right;
+}
+
+tbody .svg{
+    padding-left: 0 !important;
+}
+
+tbody .meters {
+    border-right: none !important;
+    text-align: right;
+}
+
+thead #barchart-head {
+    max-width: 200px;
+    min-width: 100px;
+}
+
+#meters-by-district-plot .axis-x text {
+    color: #656565;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+#meters-by-district-plot .axis-y text {
+    color: #222222;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+#meters-by-district-plot .axis-x .domain {
+    display: none;
+}
+
+#meters-by-district-plot .axis-x line {
+    stroke: #EBEBEB;
+    mix-blend-mode: multiply;
+    stroke-width: 1px;
+    stroke-dasharray: 2px;
+}
+
+#meters-by-district-plot .axis-y line {
+    display: none;
+}
+
+tbody .row {
+    mix-blend-mode: multiply;
+}
+
+tbody .row:after, .row:before {
+    /* display: table; */
+    content: none;
+}
+
+#t-perc, #t-meters {
+    justify-content: flex-end;
+}
+
+.disabled {
+    opacity: 0.5;
+}
