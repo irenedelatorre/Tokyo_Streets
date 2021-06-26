@@ -24,11 +24,16 @@ class meters_by_wards {
 
         this.table = d3.select("#meters-by-district-table").selectAll('tbody');
 
-        this.width = document.getElementById('barchart-head').clientWidth;
+        this.width = 50; // document.getElementById('barchart-head').clientWidth;
         this.height = 20 - this.margin.t - this.margin.b;
         this.scaleX = d3.scaleLinear()
             .domain([0, this.max]).nice()
             .range([0, 232]);
+
+        this.table_ward = d3.select('#t-ward');
+        this.table_perc = d3.select('#t-perc');
+        this.table_chart = d3.select('#barchart-head');
+        this.table_ward = d3.select('#t-ward');
 
         this.createTable();
         // // svg

@@ -100,12 +100,12 @@ class controlAnimation {
         this.playBtn
             .on('click', d => {
                 const btn = this.playBtn
-                    .select('.material-icons');
+                    .select('svg')
+                    .select('.icon-btn');
 
                 if (this.animationBtn === 'play') {
-                    this.playBtn
-                        .select('.material-icons')
-                        .html('pause');
+                    btn
+                        .attr('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z');
 
                     this.animation = true;
                     this.animationBtn = 'pause';
@@ -121,9 +121,8 @@ class controlAnimation {
                     this.timer = setInterval(() => this.step(), 1000)
 
                 } else if (this.animationBtn === 'pause') {
-                    this.playBtn
-                        .select('.material-icons')
-                        .html('play_arrow');
+                    btn
+                        .attr('d', 'M8 5v14l11-7z');
 
                     this.animation = false;
                     this.animationBtn = 'play';

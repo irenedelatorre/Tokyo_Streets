@@ -6,6 +6,7 @@
     <meta name="author" content="University of Tokyo">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap-table.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="./css/app.css" rel="stylesheet"/>
@@ -24,13 +25,24 @@
                     <p><span><img class="hand" src="./assets/img/hand.svg"></img></span>Use animation controls to select a specific date</p>
                     <div class="buttons">
                         <button id="skip_previous">
-                            <span class="material-icons">skip_previous</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                                <path class="bkg-btn" d="M0 0h24v24H0z" fill="none"/>
+                                <path class="icon-btn" d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                            </svg>
                         </button>
                         <button id="play">
-                            <span class="material-icons">play_arrow</span>
+                            <!-- from material design -->
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                                <path class="bkg-btn" d="M0 0h24v24H0z" fill="none"/>
+                                <path class="icon-btn" d="M8 5v14l11-7z"/>
+                            </svg>
                         </button>
                         <button id="skip_next">
-                            <span class="material-icons">skip_next</span>
+                            <!-- from material design -->
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                                <path class="bkg-btn"d="M0 0h24v24H0z" fill="none"/>
+                                <path class="icon-btn" d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                            </svg>
                         </button>
                         <div id="time-controls"></div>
                     </div>
@@ -45,10 +57,10 @@
                     <table id="meters-by-district-table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="th-sm">Ward</th>
-                                <th class="th-sm">%</th>
-                                <th class="th-sm" id="barchart-head">Test</th>
-                                <th class="th-sm">Meters</th>
+                                <th class="th-sm"><a id ='t-ward'>Ward</a></th>
+                                <th class="th-sm"><a id = 't-perc'>%</a></th>
+                                <th class="th-sm"><a id ="barchart-head"></a>Test</th>
+                                <th class="th-sm"><a id = "t-meters">Meters</a></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -59,15 +71,17 @@
             <div class="map col-md-8"></div>
         </div>
     </div>
-<script src="./libraries/d3.v7.min.js"></script>
-<script src="./libraries/d3-simple-slider.min.js"></script>
-<!-- <script src="https://d3js.org/d3-geo.v1.min.js"></script> -->
-<!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
-<!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->
-<script src="./scripts/parseData.js"></script>
-<script src="./scripts/control-animations/control-animations.js"></script>
-<script src="./scripts/meters_time/meters_time.js"></script>
-<script src="./scripts/meters_wards/meters_wards.js"></script>
-<script src="./scripts/app.js"></script>
+    <script src="./libraries/jquery-3.6.0.min.js"></script>
+    <script src="./libraries/d3.v7.min.js"></script>
+    <script src="./libraries/d3-simple-slider.min.js"></script>
+    <script src="./libraries/bootstrap-table.min.js"></script>
+    <!-- <script src="https://d3js.org/d3-geo.v1.min.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
+    <!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->
+    <script src="./scripts/parseData.js"></script>
+    <script src="./scripts/control-animations/control-animations.js"></script>
+    <script src="./scripts/meters_time/meters_time.js"></script>
+    <script src="./scripts/meters_wards/meters_wards.js"></script>
+    <script src="./scripts/app.js"></script>
 </body>
 </html>

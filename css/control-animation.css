@@ -6,19 +6,17 @@
 }
 
 button {
-    border-radius: 0;
-    color: #e02e0b;
     background-color: transparent;
     border: 0;
 }
 
-button:hover, button:focus {
-    color: #004E67;
-    /* background-color: #e02e0b; */
+.buttons svg .icon-btn {
+    fill: #e02e0b;
 }
 
-#play .material-icons {
-    font-size: 2em;
+button:hover svg .icon-btn, button:focus svg .icon-btn {
+    fill: #004E67;
+    /* background-color: #e02e0b; */
 }
 
 #time-controls {
