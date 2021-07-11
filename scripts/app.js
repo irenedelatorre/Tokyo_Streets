@@ -36,7 +36,10 @@ Promise.all([
     // needs time range from values
     const table = new meters_by_wards(wardsMeters, dateExtent, scaleColor, formatTime);
 
-    // 3 CREATE SLIDER ----
+    // 3 CREATE MAP ---
+    const map = new mapboxMap(grid);
+
+    // 4 CREATE SLIDER ----
     // needs time range from values
     // it will modify the other charts
     const slider = new controlAnimation(dateExtent, years, months, areaChart, table);
