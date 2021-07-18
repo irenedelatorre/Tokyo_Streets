@@ -13,6 +13,7 @@ class mapboxMap {
         this.formatDate = formatDate;
         this.scaleColor = scaleColor;
         this.max = maxValue;
+        this.t = this.dateExtent[1];
 
         // mapbox access token --- CHANGE FOR CLIENT
         L.mapbox.accessToken = 'pk.eyJ1IjoiaXJlbmVkZWxhdG9ycmUiLCJhIjoiY2psdjI0amR4MG9ybjNrcXg1cWMxaXpldCJ9.p2pLC5jzgpGPQaWGcjlATA';
@@ -42,7 +43,17 @@ class mapboxMap {
 
         this.map.on("viewreset", this.updateGrid.bind(this));
         this.map.on("zoomend", this.updateGrid.bind(this));
-        this.map.on("moveend", this.updateGrid.bind(this));
+        this.map.on("moveend", this.mapMove.bind(this));
+    }
+
+    mapMove(){
+        // 1 get bounds from map
+        this.map.getBounds();
+        this.svg
+            .selectAll('.grid_unit')
+            .remove();
+
+        this.drawGrid(this.t);
     }
 
     projection(long_lat) {
@@ -61,6 +72,11 @@ class mapboxMap {
         // get values from that date
         const filteredData = this.data.filter(d => d[0] === time)[0][1];
 
+        // filter to show only the bounds in the map
+        const bounds = this.map.getBounds();
+        // check if it's inside -- should be inside for each
+        parentPolygon.contains(childPolygon)
+
         // filter grid for only those values;
         const thisRects = this.grid.filter((d, j) => {
             let match = false;
@@ -73,7 +89,8 @@ class mapboxMap {
             return match === true;
         })
 
-        return {
+
+        this.dataMap = {
             data: filteredData,
             grid: thisRects
         }
@@ -86,25 +103,36 @@ class mapboxMap {
         this.svg = d3.select(this.map.getPanes().overlayPane).append("svg")
             .attr('width', this.widthMap)
             .attr('height', this.heightMap);
+
+        this.backgroundSVG = this.svg
+            .append('rect')
+            .attr('class', 'background')
+            .attr('width', this.widthMap)
+            .attr('height', this.heightMap)
+            .attr('x', 0)
+            .attr('y', 0);
         
         this.plotGrid = this.svg.append('g')
-            .attr('class', 'grid');
+            .attr('class', 'grid leaflet-zoom-hide');
         
-        this.drawGrid(this.dateExtent[1]);
+        this.drawGrid(this.t);
     }
 
     drawGrid(t) {
+        console.log(t)
         // filter data by time
-        const drawRects = this.filterValues(t);
+        this.filterValues(t);
+        console.log(this.dataMap)
 
         // console.log(topojson.feature(counties, counties.objects.counties).features))
 
-        this.plotGrid.selectAll('.grid_unit')
-            .data(drawRects.grid)
+        this.plotGrid
+            .selectAll('.grid_unit')
+            .data(this.dataMap.grid)
             .join('path')
-            .attr('class', 'grid_unit')
+            .attr('class', d => `grid_unit ${d.properties.cell_id}`)
             .style('fill', d => {
-                const value = drawRects.data.filter(e => e.cell_id === d.properties.cell_id);
+                const value = this.dataMap.data.filter(e => e.cell_id === d.properties.cell_id);
                 return this.scaleColor(value[0].value / this.max)
             })
             .style('stroke', 'none');
