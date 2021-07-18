@@ -7,7 +7,7 @@ Promise.all([
 ])
 .then(function (files) {
     console.log(files);
-    const grid = files[0].objects.tokyo_grid.geometries;
+    const grid = topojson.feature(files[0], files[0].objects.tokyo_grid).features;
     const ward = files[1];
     const values = files[2];
     const wards = files[3];
@@ -17,6 +17,7 @@ Promise.all([
     const months =  d3.utcMonths(dateExtent[0], dateExtent[1]);
     const formatTime = d3.timeFormat("%d %B %Y");
     const formatDate = d3.timeFormat('%B %Y');
+    const maxValue = d3.max(values, d => d.value);
 
     // rollup - array - value for rollup - key
     const groupedByDate = d3.rollups(values,
@@ -56,7 +57,7 @@ Promise.all([
     const table = new meters_by_wards(wardsMeters, dateExtent, scaleColor, formatTime);
 
     // 3 CREATE MAP ---
-    const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate);
+    const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue);
 
     // 4 CREATE SLIDER ----
     // needs time range from values
