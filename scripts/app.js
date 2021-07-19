@@ -57,7 +57,7 @@ Promise.all([
     const table = new meters_by_wards(wardsMeters, dateExtent, scaleColor, formatTime);
 
     // 3 CREATE MAP ---
-    const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue);
+    const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue, ward);
 
     // 4 CREATE SLIDER ----
     // needs time range from values

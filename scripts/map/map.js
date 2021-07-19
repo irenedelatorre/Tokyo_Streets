@@ -1,5 +1,5 @@
 class mapboxMap {
-    constructor(grid, data, dateExtent, formatDate, scaleColor, maxValue) {
+    constructor(grid, data, dateExtent, formatDate, scaleColor, maxValue, ward) {
         // var latlng = L.latLng(50.5, 30.5);
         // [Y, X]
         this.tokyo_lon_lat = [35.6762, 139.6503];
@@ -9,6 +9,7 @@ class mapboxMap {
 
         this.grid = grid;
         this.data = data;
+        this.wards = ward;
         this.dateExtent = dateExtent;
         this.formatDate = formatDate;
         this.scaleColor = scaleColor;
@@ -41,24 +42,14 @@ class mapboxMap {
         });
         this.createSVG();
 
-        this.map.on("viewreset", this.updateGrid.bind(this));
-        this.map.on("zoomend", this.updateGrid.bind(this));
-        this.map.on("moveend", this.mapMove.bind(this));
-    }
-
-    mapMove(){
-        // 1 get bounds from map
-        this.map.getBounds();
-        this.svg
-            .selectAll('.grid_unit')
-            .remove();
-
-        this.drawGrid(this.t);
+        this.map.on("viewreset", this.drawGrid.bind(this));
+        this.map.on("zoom", this.drawGrid.bind(this));
+        this.map.on("moveend", this.drawGrid.bind(this));
     }
 
     projection(long_lat) {
         // [Y, X]
-        const lon_lat_l = new L.LatLng(long_lat[0], long_lat[1]);
+        const lon_lat_l = new L.LatLng(long_lat[1], long_lat[0]);
 
         const p = this.map.latLngToLayerPoint(lon_lat_l);
     
@@ -74,19 +65,26 @@ class mapboxMap {
 
         // filter to show only the bounds in the map
         const bounds = this.map.getBounds();
+        console.log(bounds);
+
         // check if it's inside -- should be inside for each
-        parentPolygon.contains(childPolygon)
 
         // filter grid for only those values;
         const thisRects = this.grid.filter((d, j) => {
-            let match = false;
+            let match_data = false;
+            let match_bounds = false;
+
+            const thisBounds = this.getBounds(d.geometry.coordinates[0]);
+            const intersect = bounds.intersects(thisBounds);
+
+            if (intersect === false) match_bounds = bounds.contains(thisBounds);
 
             for (var i = 0; i < filteredData.length; i++) {
                 const id = filteredData[i].cell_id;
-                if (d.properties.cell_id === id) match = true;
+                if (d.properties.cell_id === id) match_data = true;
             }
 
-            return match === true;
+            return (match_data === true && match_bounds === true) || (match_data === true && intersect === true);
         })
 
 
@@ -96,35 +94,54 @@ class mapboxMap {
         }
     }
 
+    getBounds(geo){
+        const x = d3.extent(geo, d => d[0]);
+        const y = d3.extent(geo, d => d[1]);
+
+        return [[y[0], x[0]], [y[1], x[1]]]
+    }
+
     createSVG() {
-        this.widthMap = d3.select('#map').node().clientWidth;
-        this.heightMap = d3.select('#map').node().clientHeight;
+        // might need to change to tokyo shape
+        const bounds = this.pathArea.bounds(this.wards);
+        console.log(bounds, this.wards)
+        // Y X
+        const topLeft = this.projection([this.tokyo_bounds[0][1], this.tokyo_bounds[0][0]]);
+        const bottomRight = this.projection([this.tokyo_bounds[1][1], this.tokyo_bounds[1][0]]);
 
-        this.svg = d3.select(this.map.getPanes().overlayPane).append("svg")
-            .attr('width', this.widthMap)
-            .attr('height', this.heightMap);
+        console.log(topLeft, bottomRight)
+        // console.log(topLeft, bottomRight)
+        // width and height don't work with leaflet
+        // this.widthMap = d3.select('#map').node().clientWidth;
+        // this.heightMap = d3.select('#map').node().clientHeight;
 
-        this.backgroundSVG = this.svg
-            .append('rect')
-            .attr('class', 'background')
-            .attr('width', this.widthMap)
-            .attr('height', this.heightMap)
-            .attr('x', 0)
-            .attr('y', 0);
+        this.svg = d3.select(this.map.getPanes().overlayPane)
+            .append("svg")
+            .attr('width', bottomRight[0] - topLeft[0])
+            .attr('height', topLeft[1] - bottomRight[1])
+            .style("left", topLeft[0] + "px")
+            .style("top", bottomRight[1] + "px");
+
+        // this.backgroundSVG = this.svg
+        //     .append('rect')
+        //     .attr('class', 'background')
+        //     .attr('width', this.widthMap)
+        //     .attr('height', this.heightMap)
+        //     .attr('x', 0)
+        //     .attr('y', 0);
         
         this.plotGrid = this.svg.append('g')
-            .attr('class', 'grid leaflet-zoom-hide');
+            .attr('class', 'grid leaflet-zoom-hide')
+            .attr('transform', `translate(${-topLeft[0]}, ${-bottomRight[1]})`)
+            // .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
         
         this.drawGrid(this.t);
     }
 
-    drawGrid(t) {
-        console.log(t)
+    drawGrid() {
         // filter data by time
-        this.filterValues(t);
-        console.log(this.dataMap)
-
-        // console.log(topojson.feature(counties, counties.objects.counties).features))
+        this.filterValues(this.t);
+        console.log(this.dataMap);
 
         this.plotGrid
             .selectAll('.grid_unit')
@@ -142,6 +159,7 @@ class mapboxMap {
 
     updateGrid() {
         console.log('update');
+    
         this.plotGrid
             .selectAll('.grid_unit')
             .attr('d', this.pathArea)
