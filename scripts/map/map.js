@@ -17,13 +17,13 @@ class mapboxMap {
         this.t = this.dateExtent[1];
 
         // mapbox access token --- CHANGE FOR CLIENT
-        L.mapbox.accessToken = 'pk.eyJ1IjoiaXJlbmVkZWxhdG9ycmUiLCJhIjoiY2psdjI0amR4MG9ybjNrcXg1cWMxaXpldCJ9.p2pLC5jzgpGPQaWGcjlATA';
+        L.mapbox.accessToken = "pk.eyJ1IjoiaXJlbmVkZWxhdG9ycmUiLCJhIjoiY2psdjI0amR4MG9ybjNrcXg1cWMxaXpldCJ9.p2pLC5jzgpGPQaWGcjlATA";
 
-        const map = L.mapbox.map('map',)
+        const map = L.mapbox.map("map",)
             // fit to the bounds 
             .fitBounds(this.tokyo_bounds)
             // add layer from mapbox Studio
-            .addLayer(L.mapbox.styleLayer('mapbox://styles/irenedelatorre/ckqzdri1a0m5517pk1ye1fpk4'));
+            .addLayer(L.mapbox.styleLayer("mapbox://styles/irenedelatorre/ckqzdri1a0m5517pk1ye1fpk4"));
 
         // this.map needs to be external to access it from geoTransform
         this.map = map;
@@ -39,7 +39,7 @@ class mapboxMap {
         this.reset();
 
         // interactions
-        this.map.on('error', function(err) {
+        this.map.on("error", function(err) {
             // Handle error
             console.log(err);
         });
@@ -78,43 +78,42 @@ class mapboxMap {
         this.svg = d3.select(this.map.getPanes().overlayPane)
             .append("svg");
         
-        this.plotGrid = this.svg.append('g')
-            .attr('class', 'grid leaflet-zoom-hide');
+        this.plotGrid = this.svg.append("g")
+            .attr("class", "grid leaflet-zoom-hide");
         
         this.drawGrid(this.t);
     }
 
     drawGrid(t) {
+        this.t = t;
+        
         // filter data by time
-        this.filterValues(t);
+        this.filterValues(this.t);
 
         this.plotGrid
-            .selectAll('.grid_unit')
+            .selectAll(".grid_unit")
             .data(this.dataMap.grid)
-            .join('path')
-            .attr('class', d => `grid_unit ${d.properties.cell_id}`)
-            .style('fill', d => {
+            .join("path")
+            .attr("class", d => `grid_unit ${d.properties.cell_id}`)
+            .style("fill", d => {
                 const value = this.dataMap.data.filter(e => e.cell_id === d.properties.cell_id);
                 return this.scaleColor(value[0].value / this.max)
             })
-            .style('stroke', 'none');
+            .style("stroke", "none");
         
         this.updateGrid();
     }
 
     updateGrid() {
-        console.log('update');
+        console.log("update");
     
         this.plotGrid
-            .selectAll('.grid_unit')
-            .attr('d', this.pathArea)
+            .selectAll(".grid_unit")
+            .attr("d", this.pathArea)
     }
 
     reset() {
-        // might need to change to tokyo shape
         const bounds = this.pathArea.bounds(this.wards);
-        console.log(bounds, this.wards)
-        // Y X
         const topLeft = bounds[0];
         const bottomRight = bounds[1];
 
@@ -125,7 +124,7 @@ class mapboxMap {
             .style("top", topLeft[1] + "px");
 
         this.plotGrid
-            .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+            .attr("transform", `translate(${-topLeft[0]}, ${-topLeft[1]})`);
 
         this.updateGrid();
     }
@@ -134,9 +133,7 @@ class mapboxMap {
     projection(long_lat) {
         // [Y, X]
         const lon_lat_l = new L.LatLng(long_lat[1], long_lat[0]);
-
         const p = this.map.latLngToLayerPoint(lon_lat_l);
-    
         return [p.x, p.y]
     }
 
