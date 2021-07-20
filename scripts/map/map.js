@@ -35,25 +35,17 @@ class mapboxMap {
 
         this.pathArea = d3.geoPath().projection(this.transform);
 
+        this.createSVG();
+        this.reset();
+
         // interactions
         this.map.on('error', function(err) {
             // Handle error
             console.log(err);
         });
-        this.createSVG();
 
-        this.map.on("viewreset", this.drawGrid.bind(this));
-        this.map.on("zoom", this.drawGrid.bind(this));
-        this.map.on("moveend", this.drawGrid.bind(this));
-    }
-
-    projection(long_lat) {
-        // [Y, X]
-        const lon_lat_l = new L.LatLng(long_lat[1], long_lat[0]);
-
-        const p = this.map.latLngToLayerPoint(lon_lat_l);
-    
-        return [p.x, p.y]
+        this.map.on("viewreset", this.reset.bind(this));
+        this.map.on("moveend", this.reset.bind(this));
     }
 
     // 1 filter by time
@@ -63,30 +55,17 @@ class mapboxMap {
         // get values from that date
         const filteredData = this.data.filter(d => d[0] === time)[0][1];
 
-        // filter to show only the bounds in the map
-        const bounds = this.map.getBounds();
-        console.log(bounds);
-
-        // check if it's inside -- should be inside for each
-
         // filter grid for only those values;
         const thisRects = this.grid.filter((d, j) => {
             let match_data = false;
-            let match_bounds = false;
-
-            const thisBounds = this.getBounds(d.geometry.coordinates[0]);
-            const intersect = bounds.intersects(thisBounds);
-
-            if (intersect === false) match_bounds = bounds.contains(thisBounds);
 
             for (var i = 0; i < filteredData.length; i++) {
                 const id = filteredData[i].cell_id;
                 if (d.properties.cell_id === id) match_data = true;
             }
 
-            return (match_data === true && match_bounds === true) || (match_data === true && intersect === true);
+            return match_data === true;
         })
-
 
         this.dataMap = {
             data: filteredData,
@@ -94,54 +73,20 @@ class mapboxMap {
         }
     }
 
-    getBounds(geo){
-        const x = d3.extent(geo, d => d[0]);
-        const y = d3.extent(geo, d => d[1]);
-
-        return [[y[0], x[0]], [y[1], x[1]]]
-    }
-
     createSVG() {
-        // might need to change to tokyo shape
-        const bounds = this.pathArea.bounds(this.wards);
-        console.log(bounds, this.wards)
-        // Y X
-        const topLeft = this.projection([this.tokyo_bounds[0][1], this.tokyo_bounds[0][0]]);
-        const bottomRight = this.projection([this.tokyo_bounds[1][1], this.tokyo_bounds[1][0]]);
-
-        console.log(topLeft, bottomRight)
-        // console.log(topLeft, bottomRight)
-        // width and height don't work with leaflet
-        // this.widthMap = d3.select('#map').node().clientWidth;
-        // this.heightMap = d3.select('#map').node().clientHeight;
 
         this.svg = d3.select(this.map.getPanes().overlayPane)
-            .append("svg")
-            .attr('width', bottomRight[0] - topLeft[0])
-            .attr('height', topLeft[1] - bottomRight[1])
-            .style("left", topLeft[0] + "px")
-            .style("top", bottomRight[1] + "px");
-
-        // this.backgroundSVG = this.svg
-        //     .append('rect')
-        //     .attr('class', 'background')
-        //     .attr('width', this.widthMap)
-        //     .attr('height', this.heightMap)
-        //     .attr('x', 0)
-        //     .attr('y', 0);
+            .append("svg");
         
         this.plotGrid = this.svg.append('g')
-            .attr('class', 'grid leaflet-zoom-hide')
-            .attr('transform', `translate(${-topLeft[0]}, ${-bottomRight[1]})`)
-            // .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+            .attr('class', 'grid leaflet-zoom-hide');
         
         this.drawGrid(this.t);
     }
 
-    drawGrid() {
+    drawGrid(t) {
         // filter data by time
-        this.filterValues(this.t);
-        console.log(this.dataMap);
+        this.filterValues(t);
 
         this.plotGrid
             .selectAll('.grid_unit')
@@ -163,5 +108,42 @@ class mapboxMap {
         this.plotGrid
             .selectAll('.grid_unit')
             .attr('d', this.pathArea)
+    }
+
+    reset() {
+        // might need to change to tokyo shape
+        const bounds = this.pathArea.bounds(this.wards);
+        console.log(bounds, this.wards)
+        // Y X
+        const topLeft = bounds[0];
+        const bottomRight = bounds[1];
+
+        this.svg
+            .attr("width", bottomRight[0] - topLeft[0])
+            .attr("height", bottomRight[1] - topLeft[1])
+            .style("left", topLeft[0] + "px")
+            .style("top", topLeft[1] + "px");
+
+        this.plotGrid
+            .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+
+        this.updateGrid();
+    }
+
+    // reproject long - lat values
+    projection(long_lat) {
+        // [Y, X]
+        const lon_lat_l = new L.LatLng(long_lat[1], long_lat[0]);
+
+        const p = this.map.latLngToLayerPoint(lon_lat_l);
+    
+        return [p.x, p.y]
+    }
+
+    getBounds(geo){
+        const x = d3.extent(geo, d => d[0]);
+        const y = d3.extent(geo, d => d[1]);
+
+        return [[y[0], x[0]], [y[1], x[1]]]
     }
 }

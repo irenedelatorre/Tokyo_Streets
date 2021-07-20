@@ -8,7 +8,7 @@ Promise.all([
 .then(function (files) {
     console.log(files);
     const grid = topojson.feature(files[0], files[0].objects.tokyo_grid).features;
-    const ward = files[1];
+    const wards_shp = topojson.feature(files[1], files[1].objects["boundary_admin_level_7.shp"])
     const values = files[2];
     const wards = files[3];
     
@@ -57,7 +57,7 @@ Promise.all([
     const table = new meters_by_wards(wardsMeters, dateExtent, scaleColor, formatTime);
 
     // 3 CREATE MAP ---
-    const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue, ward);
+    const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue, wards_shp);
 
     // 4 CREATE SLIDER ----
     // needs time range from values
