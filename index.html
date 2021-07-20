@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="./libraries/mapbox.js-bower-3.1.1/mapbox.css" rel="stylesheet"/>
     <link href="./css/app.css" rel="stylesheet"/>
     <link href="./css/control-animation.css" rel="stylesheet"/>
     <link href="./css/meters_time.css" rel="stylesheet"/>
     <link href="./css/meters_wards.css" rel="stylesheet"/>
+    <link href="./css/map.css" rel="stylesheet"/>
 </head>
 <body>
     <nav>
@@ -99,18 +101,23 @@
                     <!-- <div id="meters-by-district-plot"></div> -->
                 </div>
             </div>
-            <div class="map col-md-8"></div>
+            <div class="col-md-8 map-container">
+                <div id="map" class="row"></div>
+            </div>
         </div>
     </div>
     <script src="./libraries/d3.v7.min.js"></script>
     <script src="./libraries/d3-simple-slider.min.js"></script>
-    <!-- <script src="https://d3js.org/d3-geo.v1.min.js"></script> -->
+    <script src="./libraries/mapbox.js-bower-3.1.1/mapbox.js"></script>
+    <script src="./libraries/topojson.js"></script>
+    <!-- <script src="./libraries/geojson-bbox.js"></script> -->
     <!-- <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
     <!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->
     <script src="./scripts/parseData.js"></script>
     <script src="./scripts/control-animations/control-animations.js"></script>
     <script src="./scripts/meters_time/meters_time.js"></script>
     <script src="./scripts/meters_wards/meters_wards.js"></script>
+    <script src="./scripts/map/map.js"></script>    
     <script src="./scripts/app.js"></script>
 </body>
 </html>

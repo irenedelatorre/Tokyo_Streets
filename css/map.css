@@ -1,0 +1,30 @@
+.map-container {
+    max-height: 90vh;
+    height: 800px;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 2em 0;
+    border: 1px solid red;
+}
+
+svg .background {
+    stroke: none;
+    /* fill: #e6e6e6 */
+    fill: white;
+}
+
+#map .leaflet-tile-pane {
+    opacity: 0.25;
+}
+
+#map .leaflet-overlay-pane {
+    mix-blend-mode: multiply;
+}
+
+#map .grid_unit {
+    shape-rendering: crispEdges;
+}
