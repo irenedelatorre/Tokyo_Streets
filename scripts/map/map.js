@@ -97,7 +97,7 @@ class mapboxMap {
             .attr("class", d => `grid_unit ${d.properties.cell_id}`)
             .style("fill", d => {
                 const value = this.dataMap.data.filter(e => e.cell_id === d.properties.cell_id);
-                return this.scaleColor(value[0].value / this.max)
+                return this.scaleColor(100 * value[0].value / this.max)
             })
             .style("stroke", "none");
         
