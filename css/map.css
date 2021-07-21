@@ -28,3 +28,23 @@ svg .background {
 #map .grid_unit {
     shape-rendering: crispEdges;
 }
+
+/* leaflet */
+.leaflet-bar a {
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Noto Sans JP', Arial, sans-serif;
+}
+
+.leaflet-control-zoomhome-home svg {
+    max-width: 23px;
+    height: auto;
+    margin-top: 1px;
+}
+
+.leaflet-control-zoomhome-home svg .icon {
+    fill: #E02E0B;
+}
+.leaflet-control-zoomhome-home svg:hover .icon {
+    fill: #004E67;
+}

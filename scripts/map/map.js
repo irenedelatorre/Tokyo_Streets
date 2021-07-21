@@ -19,11 +19,16 @@ class mapboxMap {
         // mapbox access token --- CHANGE FOR CLIENT
         L.mapbox.accessToken = "pk.eyJ1IjoiaXJlbmVkZWxhdG9ycmUiLCJhIjoiY2psdjI0amR4MG9ybjNrcXg1cWMxaXpldCJ9.p2pLC5jzgpGPQaWGcjlATA";
 
-        const map = L.mapbox.map("map",)
+        const map = L.mapbox.map("map", null, {zoomControl: false})
             // fit to the bounds 
             .fitBounds(this.tokyo_bounds)
             // add layer from mapbox Studio
             .addLayer(L.mapbox.styleLayer("mapbox://styles/irenedelatorre/ckqzdri1a0m5517pk1ye1fpk4"));
+
+        // zoom home for reset map
+        this.zoomHome = L.Control.zoomHome();
+        console.log(L.Control.zoomHome())
+        this.zoomHome.addTo(map);
 
         // this.map needs to be external to access it from geoTransform
         this.map = map;
