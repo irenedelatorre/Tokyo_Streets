@@ -59,10 +59,13 @@ Promise.all([
     // 3 CREATE MAP ---
     const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue, wards_shp);
 
+    // 4 CREATE LEGEND ---
+    const legend = new mapLegend(dateExtent, scaleColor, formatDate);
+
     // 4 CREATE SLIDER ----
     // needs time range from values
     // it will modify the other charts
-    const slider = new controlAnimation(dateExtent, years, months, areaChart, table, map, formatDate);
+    const slider = new controlAnimation(dateExtent, years, months, areaChart, table, map, legend);
     
 })
 .catch(function(error){

@@ -1,5 +1,5 @@
 class controlAnimation {
-    constructor(range, years, months, areaChart, table, map) {
+    constructor(range, years, months, areaChart, table, map, legend) {
         this.range = range;
         this.years = years;
         this.months = months;
@@ -66,7 +66,7 @@ class controlAnimation {
                 this.areaChart.timeLine(d);
                 this.table.update(d);
                 this.map.drawGrid(d);
-                this.map.updateLegendDate(d);
+                this.legend.updateLegendDate(d);
                 this.plotSlider.dispatch("input");
             });
 
