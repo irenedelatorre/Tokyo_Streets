@@ -16,6 +16,7 @@ class controlAnimation {
         this.areaChart = areaChart;
         this.table = table;
         this.map = map;
+        this.legend = legend;
         this.animation = false;
         this.animationBtn = "play";
         this.nextBtn = d3.select("#skip_next");

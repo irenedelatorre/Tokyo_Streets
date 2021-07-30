@@ -86,4 +86,8 @@ class mapLegend {
         d3.selectAll("#map-date")
             .html(this.formatDate(t))
     }
+
+    createDropdown() {
+        
+    }
 }

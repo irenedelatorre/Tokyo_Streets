@@ -30,6 +30,8 @@ Promise.all([
 
     const wardsMeters = parse.wards_meters(values, wards, formatTime);
 
+    console.log(wards_shp);
+
     // filter the grid to only those rectangles with a value
     const values_ids_true = test = d3.groupSort(values,
         d => d.cell_id, 
