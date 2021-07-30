@@ -7,8 +7,7 @@
     height: 100%;
     width: 100%;
     padding: 0;
-    margin: 2em 0;
-    border: 1px solid red;
+    margin: 1.4em 0;
 }
 
 svg .background {
@@ -27,4 +26,63 @@ svg .background {
 
 #map .grid_unit {
     shape-rendering: crispEdges;
+}
+
+/* leaflet */
+.leaflet-bar a {
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Noto Sans JP', Arial, sans-serif;
+}
+
+.leaflet-control-zoomhome-home svg {
+    max-width: 23px;
+    height: auto;
+    margin-top: 1px;
+}
+
+.leaflet-control-zoomhome-home svg .icon {
+    fill: #E02E0B;
+}
+.leaflet-control-zoomhome-home svg:hover .icon {
+    fill: #004E67;
+}
+
+/* map legend */
+.map-legend {
+    background-color: white;
+    width: 20%;
+    max-width: 328px;
+    position: absolute;
+    z-index: 10000;
+    right: 2em;
+    top: 2em;
+    padding: 1em;
+    border: 1px solid #707070;
+}
+
+.title-legend {
+    font-weight: bold;
+}
+
+#map-date {
+    font-weight: bold;
+    color: #555555;
+}
+
+#plot-legend {
+    width: 100%;
+    height: 75px;
+}
+
+.legend-item-rect {
+    stroke-width: 1px;
+}
+
+.legend-item-text {
+    font-size: 0.875em;
+}
+
+.legend-item-line {
+    stroke: #222222;
 }

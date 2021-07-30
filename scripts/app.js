@@ -47,7 +47,6 @@ Promise.all([
     // 0 COLORS
     const scaleColor = d3.scaleThreshold()
         .domain([0.125, 5, 12, 17, 22])
-        // .domain([5, 12, 17, 22])
         .range(['#ffffff','#6BC6E3', '#3C9DB9', '#047690', '#004E67', '#002940'])
 
     // 1 CREATE AREA CHART ----
