@@ -57,9 +57,6 @@ class controlAnimation {
                 if (this.animation === true) {
                     this.animation === false;
                     this.animationBtn = "play";
-                    this.playBtn
-                        .select(".material-icons")
-                        .html("play_arrow");
                     clearInterval(this.timer);
 
                 }
@@ -69,6 +66,7 @@ class controlAnimation {
                 this.areaChart.timeLine(d);
                 this.table.update(d);
                 this.map.drawGrid(d);
+                this.map.updateLegendDate(d);
                 this.plotSlider.dispatch("input");
             });
 
