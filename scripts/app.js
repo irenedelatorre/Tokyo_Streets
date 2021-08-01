@@ -30,7 +30,12 @@ Promise.all([
 
     const wardsMeters = parse.wards_meters(values, wards, formatTime);
 
-    console.log(wards_shp);
+    console.log(wards_shp.features[1].properties["name:en"]);
+
+    const wards_name = (wards_shp.features).map(d => d.properties["name:en"])
+        .sort((a, b) => d3.ascending(a, b));
+
+    console.log(wards_name);
 
     // filter the grid to only those rectangles with a value
     const values_ids_true = test = d3.groupSort(values,
@@ -62,7 +67,7 @@ Promise.all([
     const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue, wards_shp);
 
     // 4 CREATE LEGEND ---
-    const legend = new mapLegend(dateExtent, scaleColor, formatDate);
+    const legend = new mapLegend(wards_name, dateExtent, scaleColor, formatDate);
 
     // 4 CREATE SLIDER ----
     // needs time range from values

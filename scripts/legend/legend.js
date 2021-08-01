@@ -1,9 +1,12 @@
 class mapLegend {
-    constructor(dateExtent, scaleColor, formatDate) {
+    constructor(wards_name, dateExtent, scaleColor, formatDate) {
         this.dateExtent = dateExtent;
         this.t = this.dateExtent[1];
         this.formatDate = formatDate;
         this.scaleColor = scaleColor;
+        this.wards_name = wards_name;
+        this.select = d3.select("#wards-list");
+        this.changeWard = d3.dispatch('selectWard');
         this.margin = {
             t: 7,
             l: 20,
@@ -28,7 +31,29 @@ class mapLegend {
 
         this.createSVG();
         this.createLegend();
+        this.createDropdown();
+
+        this.select
+            .on("change", d => {
+                console.log(d);
+                this.changeWard.call("selectWard", this, this.value);
+            });
+
+        this.changeWard
+            .on("selectWard", (type, i) => console.log(type));
+
+            // typeDispatch.on("changeviz",function(type,i){
+            //     if(type=="Default"){
+            //         drawDefault()
+            //     }if (type=="Swimmer nationality"){
+            //         drawCountries()
+            //     } if (type=="Continent nationality"){
+            //         drawContinents ()
+            //     }
+            // });
     }
+
+    // selectWard()
 
     createSVG() {
         this.legendContainer = d3.select("#plot-legend")
@@ -88,6 +113,23 @@ class mapLegend {
     }
 
     createDropdown() {
-        
+        this.select
+            .selectAll("option")
+            .data(this.wards_name)
+            .join("option")
+            .html(d => d)
+            .attr("value", d => d);
     }
+
+    // parseEvents(n){
+    //     d3.select(".event-list")
+    //         .append("option")
+    //         .html(n.Event + " (" + n.Number + ")")
+    //         .attr("value", n.Event);
+    
+    //     return {
+    //         event: n.Event,
+    //         id: n.id,
+    //     }
+    // }
 }
