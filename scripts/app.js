@@ -8,6 +8,7 @@ Promise.all([
 .then(function (files) {
     console.log(files);
     const grid = topojson.feature(files[0], files[0].objects.tokyo_grid).features;
+    console.log(files[1])
     const wards_shp = topojson.feature(files[1], files[1].objects["boundary_admin_level_7.shp"])
     const values = files[2];
     const wards = files[3];
@@ -67,7 +68,7 @@ Promise.all([
     const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue, wards_shp);
 
     // 4 CREATE LEGEND ---
-    const legend = new mapLegend(wards_name, dateExtent, scaleColor, formatDate);
+    const legend = new mapLegend(wards_name, dateExtent, scaleColor, formatDate, map);
 
     // 4 CREATE SLIDER ----
     // needs time range from values
