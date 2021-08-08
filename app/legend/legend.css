@@ -10,6 +10,7 @@
     top: 2em;
     padding: 1em;
     border: 1px solid #707070;
+    min-width: 221px;
 }
 
 .title-legend {

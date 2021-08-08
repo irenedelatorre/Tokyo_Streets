@@ -5,16 +5,16 @@
     <title>Tokyo Streets</title>
     <meta name="author" content="University of Tokyo">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./libraries/bootstrap/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="./css/leaflet.zoomhome.css" rel="stylesheet"/>
-    <link href="./libraries/mapbox.js-bower-3.1.1/mapbox.css" rel="stylesheet"/>
-    <link href="./css/app.css" rel="stylesheet"/>
-    <link href="./css/control-animation.css" rel="stylesheet"/>
-    <link href="./css/meters_time.css" rel="stylesheet"/>
-    <link href="./css/meters_wards.css" rel="stylesheet"/>
-    <link href="./css/map.css" rel="stylesheet"/>
-    <link href="./css/legend.css" rel="stylesheet"/>
+    <link href="./libraries/mapbox-leaflet/leaflet.zoomhome.css" rel="stylesheet"/>
+    <link href="./libraries/mapbox-leaflet/mapbox.js-bower-3.1.1/mapbox.css" rel="stylesheet"/>
+    <link href="./app/app.css" rel="stylesheet"/>
+    <link href="./app/control-animations/control-animation.css" rel="stylesheet"/>
+    <link href="./app/meters_time/meters_time.css" rel="stylesheet"/>
+    <link href="./app/meters_wards/meters_wards.css" rel="stylesheet"/>
+    <link href="./app/map/map.css" rel="stylesheet"/>
+    <link href="./app/legend/legend.css" rel="stylesheet"/>
 </head>
 <body>
     <nav>
@@ -24,24 +24,32 @@
         <div class="row">
             <div class="charts col-md-4">
                 <div class="row animation-controls">
-                    <p><span><img class="hand" src="./assets/img/hand.svg"></img></span>Use animation controls to select a specific date</p>
-                    <div class="buttons">
+                    <p>
+                        <span>
+                            <img class="hand" src="./assets/img/hand.svg">
+                            </img>
+                        </span>
+                    Use animation controls to select a specific date</p>
+                    <div class="buttons" id="buttons-div">
                         <button id="skip_previous">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                height="24px" viewBox="0 0 24 24" width="24px">
                                 <path class="bkg-btn" d="M0 0h24v24H0z" fill="none"/>
                                 <path class="icon-btn" d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
                             </svg>
                         </button>
                         <button id="play">
                             <!-- from material design -->
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                height="24px" viewBox="0 0 24 24" width="24px">
                                 <path class="bkg-btn" d="M0 0h24v24H0z" fill="none"/>
                                 <path class="icon-btn" d="M8 5v14l11-7z"/>
                             </svg>
                         </button>
                         <button id="skip_next">
                             <!-- from material design -->
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                height="24px" viewBox="0 0 24 24" width="24px">
                                 <path class="bkg-btn"d="M0 0h24v24H0z" fill="none"/>
                                 <path class="icon-btn" d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
                             </svg>
@@ -51,44 +59,64 @@
                 </div>
                 <div class="row meters-time">
                     <h2>Total walkable meters over time</h2>
-                    <!-- <p><span><img class="hand" src="./assets/img/hand.svg"></img></span>Drag time line to select a specific date</p> -->
                     <div id='meters-time-plot'></div>
                 </div>
                 <div class="row by-district">
-                    <h2>Walkability by district <span id="walkability-date"></span></h2>
+                    <h2>Walkability by district
+                        <span id="walkability-date"></span>
+                    </h2>
                     <div class="table-divs">
-                        <table id="meters-by-district-table" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                        <table id="meters-by-district-table"
+                            class="table table-striped table-bordered table-sm"
+                            cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th class="th-sm">
                                         <a id ='t-ward' sort="asc" active="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" transform="scale(1,-1)" style="opacity: 0.5">
-                                                <path d="M0 0h24v24H0z" fill="none"/>
-                                                <path class="icon-btn" d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+                                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                                height="24px"
+                                                viewBox="0 0 24 24"
+                                                width="24px"
+                                                transform="scale(1,-1)" style="opacity: 0.5">
+                                                <path d="M0 0h24v24H0z"
+                                                fill="none"/>
+                                                <path class="icon-btn"
+                                                d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
                                             </svg>
                                             Ward
                                         </a>
                                     </th>
                                     <th class="th-sm">
                                         <a id = 't-perc' sort="desc" active="true">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" transform="scale(1,-1)">
-                                                <path d="M0 0h24v24H0z" fill="none"/>
-                                                <path class="icon-btn" d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+                                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                                height="24px"
+                                                viewBox="0 0 24 24"
+                                                width="24px"
+                                                transform="scale(1,-1)">
+                                                <path d="M0 0h24v24H0z"
+                                                fill="none"/>
+                                                <path class="icon-btn"
+                                                d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
                                             </svg>
                                             %
                                         </a>
                                     </th>
                                     <th class="th-sm">
-                                        <a id ="barchart-head">
-    
-                                        </a>
-                                        <!-- Test -->
+                                        <a id ="barchart-head"></a>
                                     </th>
                                     <th class="th-sm">
-                                        <a id = "t-meters" sort="desc" active="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" transform="scale(1,-1)" style="opacity: 0.5">
-                                                <path d="M0 0h24v24H0z" fill="none"/>
-                                                <path class="icon-btn" d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
+                                        <a id = "t-meters" sort="desc"
+                                            active="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                height="24px"
+                                                viewBox="0 0 24 24"
+                                                width="24px"
+                                                transform="scale(1,-1)"
+                                                style="opacity: 0.5">
+                                                <path d="M0 0h24v24H0z"
+                                                    fill="none"/>
+                                                <path class="icon-btn"
+                                                    d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/>
                                             </svg>
                                             Meters
                                         </a>
@@ -99,7 +127,6 @@
                         </table>
                     </div>
                     <p>*Calculated over the maximum number of walkable meters</p>
-                    <!-- <div id="meters-by-district-plot"></div> -->
                 </div>
             </div>
             <div class="col-md-8 map-container">
@@ -107,17 +134,15 @@
                     <p id="map-date"></p>
                     <div>
                         <label>Zoom to district</label>
-                        <select id="wards-list" class="form-select" aria-label="Default">
-                            <!-- <option selected value="All">Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option> -->
-                          </select>
+                        <select id="wards-list"
+                            class="form-select" aria-label="Default"></select>
                     </div>
                     <div>
                         <p class="title-legend">% of walkable meters</p>
                         <div id="plot-legend"></div>
-                        <p class="footnote">Calculated over maximum number of walkable meters</p>
+                        <p class="footnote">
+                            Calculated over maximum number of walkable meters
+                        </p>
                     </div>
                 </div>
                 <div id="map" class="row">
@@ -125,17 +150,17 @@
             </div>
         </div>
     </div>
-    <script src="./libraries/d3.v7.min.js"></script>
-    <script src="./libraries/d3-simple-slider.min.js"></script>
-    <script src="./libraries/mapbox.js-bower-3.1.1/mapbox.js"></script>
-    <script src="./libraries/topojson.js"></script>
-    <script src="./libraries/leaflet.zoomhome.min.js"></script>
-    <script src="./scripts/parseData.js"></script>
-    <script src="./scripts/control-animations/control-animations.js"></script>
-    <script src="./scripts/meters_time/meters_time.js"></script>
-    <script src="./scripts/meters_wards/meters_wards.js"></script>
-    <script src="./scripts/map/map.js"></script>
-    <script src="./scripts/legend/legend.js"></script>   
-    <script src="./scripts/app.js"></script>
+    <script src="./libraries/d3/d3.v7.min.js"></script>
+    <script src="./libraries/d3/d3-simple-slider.min.js"></script>
+    <script src="./libraries/d3/topojson.js"></script>
+    <script src="./libraries/mapbox-leaflet/mapbox.js-bower-3.1.1/mapbox.js"></script>
+    <script src="./libraries/mapbox-leaflet/leaflet.zoomhome.min.js"></script>
+    <script src="./app/parseData.js"></script>
+    <script src="./app/control-animations/control-animations.js"></script>
+    <script src="./app/meters_time/meters_time.js"></script>
+    <script src="./app/meters_wards/meters_wards.js"></script>
+    <script src="./app/map/map.js"></script>
+    <script src="./app/legend/legend.js"></script>
+    <script src="./app/app.js"></script>
 </body>
 </html>

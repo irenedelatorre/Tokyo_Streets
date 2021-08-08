@@ -10,7 +10,7 @@ class meters_by_wards {
         };
         this.scaleColor = scaleColor;
         this.format = d3.format(",");
-        console.log(this.data)
+
         this.t = formatTime(this.extentDate[1]);
         this.dateSummary = (Array.from(this.data, (d) => {
             return {
@@ -27,8 +27,8 @@ class meters_by_wards {
         this.width = document.getElementById('barchart-head').clientWidth;
         this.height = 20 - this.margin.t - this.margin.b;
         this.scaleX = d3.scaleLinear()
-            .domain([0, this.max]).nice()
-            .range([0, 232]);
+            .domain([0, 100])
+            .range([0, this.width]);
 
         this.table_ward = d3.select('#t-ward');
         this.table_perc = d3.select('#t-perc');
@@ -39,16 +39,6 @@ class meters_by_wards {
         this.table_ward_btn();
         this.table_perc_btn();
         this.table_meters_btn();
-
-        // // svg
-        // this.plot = d3.select('#meters-by-district-plot')
-        //     .append('svg')
-        //     .attr('width', this.width + this.margin.r + this.margin.l)
-        //     .attr('height', this.height + this.margin.t + this.margin.b);
-
-        // this.createBarChart();
-        
-
     }
 
     update(t) {
@@ -69,34 +59,39 @@ class meters_by_wards {
         d3.select('#walkability-date')
             .html(`(${this.t})`);
             
-        const thisRow = this.table
+        this.thisRow = this.table
             .selectAll('.row')
             .data(this.dateSummary)
             .join('tr')
             .attr('class', d => `${d.key}_row row`);
 
-        thisRow
+        this.thisRow
             .selectAll('td')
-            .data(d => [{
-                value: d.key,
-                class: 'name'
-            }, {
-                value: Math.round(10000 * d.value / this.max) / 100,
-                class: 'perc'
-            }, {
-                value: '',
-                class: 'svg',
-                meters: d.value
-            }, {
-                value: this.format(d.value),
-                class: 'meters'
-            }])
+            .data(d => [
+                {
+                    value: d.key,
+                    class: 'name'
+                }, {
+                    key: d.key,
+                    value: Math.round(10000 * d.value / this.max) / 100,
+                    class: 'perc'
+                }, {
+                    value: '',
+                    class: 'svg-data',
+                    key: d.key,
+                    meters: d.value
+                }, {
+                    key: d.key,
+                    value: this.format(d.value),
+                    class: 'meters'
+                }
+            ])
             .join('td')
             .attr('class', d => d.class)
             .html(d => d.value);
 
-        const plotSVG = thisRow
-            .selectAll('.svg')
+        this.plotSVGs = this.thisRow
+            .selectAll('.svg-data')
             .selectAll('svg')
             .data(d => [d])
             .join('svg')
@@ -108,13 +103,12 @@ class meters_by_wards {
             .join('rect')
             .attr('x', 0)
             .attr('y', this.margin.t)
-            .attr('width', d => this.scaleX(d.meters))
+            .attr('width', d => this.scaleX(100 * d.meters / this.max))
             .attr('height', this.height)
             .style('fill', d => this.scaleColor(100 * d.meters / this.max))
     }
 
     reset(id) {
-    
         d3.selectAll(".th-sm")
             .selectAll('a')
             .attr('active', function (d) {
@@ -132,8 +126,6 @@ class meters_by_wards {
     }
 
     sortIcon(plot, sort) {
-        console.log(sort);
-
         if (sort === 'desc') {
             plot
                 .select('svg')
@@ -143,7 +135,6 @@ class meters_by_wards {
                 .select('svg')
                 .attr('transform', 'scale(1, -1)');
         }
-        
     }
 
     table_ward_btn() {
@@ -155,19 +146,28 @@ class meters_by_wards {
                 // reset all other btns
                 this.reset('t-ward')
 
-                if((status === 'false' && sort === 'asc') || (status === 'true' && sort === 'desc')) {
+                if((status === 'false' && sort === 'asc') ||
+                    (status === 'true' && sort === 'desc')) {
+
                     this.dateSummary.sort((a, b) => d3.ascending(a.key, b.key));
                     this.table_ward
                         .attr('active', 'true')
                         .attr('sort', 'asc');
                     sort = 'asc';
-                } else if ((status === 'false' && sort === 'desc') || (status === 'true' && sort === 'asc')) {
-                    this.dateSummary.sort((a, b) => d3.descending(a.key, b.key));
+
+                } else if ((status === 'false' && sort === 'desc') ||
+                    (status === 'true' && sort === 'asc')) {
+
+                    this.dateSummary.sort((a, b) => d3.descending(
+                        a.key,
+                        b.key));
+
                     this.table_ward
                         .attr('active', 'true')
                         .attr('sort', 'desc');
                     sort = 'desc';
                 }
+
                 this.createTable();
                 this.sortIcon(this.table_ward, sort);
             })
@@ -181,19 +181,31 @@ class meters_by_wards {
                 // reset all other btns
                 this.reset('t-perc')
 
-                if((status === 'false' && sort === 'asc') || (status === 'true' && sort === 'desc')) {
-                    this.dateSummary.sort((a, b) => d3.ascending(a.value / this.max, b.value / this.max));
+                if((status === 'false' && sort === 'asc') ||
+                    (status === 'true' && sort === 'desc')) {
+
+                    this.dateSummary.sort((a, b) => d3.ascending(
+                        a.value / this.max,
+                        b.value / this.max));
+
                     this.table_perc
                         .attr('active', 'true')
                         .attr('sort', 'asc');
                     sort = 'asc';
-                } else if ((status === 'false' && sort === 'desc') || (status === 'true' && sort === 'asc')) {
-                    this.dateSummary.sort((a, b) => d3.descending(a.value / this.max, b.value / this.max));
+
+                } else if ((status === 'false' && sort === 'desc') ||
+                    (status === 'true' && sort === 'asc')) {
+
+                    this.dateSummary.sort((a, b) => d3.descending(
+                        a.value / this.max,
+                        b.value / this.max));
+
                     this.table_perc
                         .attr('active', 'true')
                         .attr('sort', 'desc');
                     sort = 'desc';
                 }
+
                 this.createTable();
                 this.sortIcon(this.table_perc, sort);
             })
@@ -207,22 +219,52 @@ class meters_by_wards {
                 // reset all other btns
                 this.reset('t-meters')
 
-                if((status === 'false' && sort === 'asc') || (status === 'true' && sort === 'desc')) {
-                    this.dateSummary.sort((a, b) => d3.ascending(a.value, b.value));
+                if((status === 'false' && sort === 'asc') ||
+                    (status === 'true' && sort === 'desc')) {
+
+                    this.dateSummary.sort((a, b) => d3.ascending(
+                        a.value,
+                        b.value));
+
                     this.table_meters
                         .attr('active', 'true')
                         .attr('sort', 'asc');
                     sort = 'asc';
-                } else if ((status === 'false' && sort === 'desc') || (status === 'true' && sort === 'asc')) {
-                    this.dateSummary.sort((a, b) => d3.descending(a.value, b.value));
+
+                } else if ((status === 'false' && sort === 'desc') ||
+                    (status === 'true' && sort === 'asc')) {
+
+                    this.dateSummary.sort((a, b) => d3.descending(
+                        a.value,
+                        b.value));
+
                     this.table_meters
                         .attr('active', 'true')
                         .attr('sort', 'desc');
                     sort = 'desc';
+
                 }
                 this.createTable();
                 this.sortIcon(this.table_meters, sort);
             })
     }
-    
+
+    resize() {
+        console.log('resize table');
+        this.width = document.getElementById('barchart-head').clientWidth;
+        this.height = 20 - this.margin.t - this.margin.b;
+        this.scaleX.range([0, this.width]);
+
+        this.thisRow
+            .selectAll('.svg-data')
+            .selectAll('svg')
+            .attr('width', this.width);
+        
+        this.thisRow
+            .selectAll('.svg-data')
+            .selectAll('svg')
+            .selectAll('rect')
+            .attr('x', 0)
+            .attr('width', d => this.scaleX(100 * d.meters / this.max));
+    }
 }
