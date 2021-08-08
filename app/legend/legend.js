@@ -107,4 +107,16 @@ class mapLegend {
             .html(d => d)
             .attr("value", d => d);
     }
+
+    // parseEvents(n){
+    //     d3.select(".event-list")
+    //         .append("option")
+    //         .html(n.Event + " (" + n.Number + ")")
+    //         .attr("value", n.Event);
+    
+    //     return {
+    //         event: n.Event,
+    //         id: n.id,
+    //     }
+    // }
 }
