@@ -1,5 +1,5 @@
 class controlAnimation {
-    constructor(range, years, months, areaChart, table, map) {
+    constructor(range, years, months, areaChart, table, map, legend) {
         this.range = range;
         this.years = years;
         this.months = months;
@@ -16,6 +16,7 @@ class controlAnimation {
         this.areaChart = areaChart;
         this.table = table;
         this.map = map;
+        this.legend = legend;
         this.animation = false;
         this.animationBtn = "play";
         this.nextBtn = d3.select("#skip_next");
@@ -57,9 +58,6 @@ class controlAnimation {
                 if (this.animation === true) {
                     this.animation === false;
                     this.animationBtn = "play";
-                    this.playBtn
-                        .select(".material-icons")
-                        .html("play_arrow");
                     clearInterval(this.timer);
 
                 }
@@ -69,6 +67,7 @@ class controlAnimation {
                 this.areaChart.timeLine(d);
                 this.table.update(d);
                 this.map.drawGrid(d);
+                this.legend.updateLegendDate(d);
                 this.plotSlider.dispatch("input");
             });
 

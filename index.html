@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- <link href="./css/font-awesome.min.css" rel="stylesheet"/> -->
     <link href="./css/leaflet.zoomhome.css" rel="stylesheet"/>
     <link href="./libraries/mapbox.js-bower-3.1.1/mapbox.css" rel="stylesheet"/>
     <link href="./css/app.css" rel="stylesheet"/>
@@ -15,6 +14,7 @@
     <link href="./css/meters_time.css" rel="stylesheet"/>
     <link href="./css/meters_wards.css" rel="stylesheet"/>
     <link href="./css/map.css" rel="stylesheet"/>
+    <link href="./css/legend.css" rel="stylesheet"/>
 </head>
 <body>
     <nav>
@@ -103,7 +103,25 @@
                 </div>
             </div>
             <div class="col-md-8 map-container">
-                <div id="map" class="row"></div>
+                <div class="map-legend">
+                    <p id="map-date"></p>
+                    <div>
+                        <label>Zoom to district</label>
+                        <select id="wards-list" class="form-select" aria-label="Default">
+                            <!-- <option selected value="All">Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option> -->
+                          </select>
+                    </div>
+                    <div>
+                        <p class="title-legend">% of walkable meters</p>
+                        <div id="plot-legend"></div>
+                        <p class="footnote">Calculated over maximum number of walkable meters</p>
+                    </div>
+                </div>
+                <div id="map" class="row">
+                </div>
             </div>
         </div>
     </div>
@@ -116,7 +134,8 @@
     <script src="./scripts/control-animations/control-animations.js"></script>
     <script src="./scripts/meters_time/meters_time.js"></script>
     <script src="./scripts/meters_wards/meters_wards.js"></script>
-    <script src="./scripts/map/map.js"></script>    
+    <script src="./scripts/map/map.js"></script>
+    <script src="./scripts/legend/legend.js"></script>   
     <script src="./scripts/app.js"></script>
 </body>
 </html>

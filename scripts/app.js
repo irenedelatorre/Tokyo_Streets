@@ -8,6 +8,7 @@ Promise.all([
 .then(function (files) {
     console.log(files);
     const grid = topojson.feature(files[0], files[0].objects.tokyo_grid).features;
+    console.log(files[1])
     const wards_shp = topojson.feature(files[1], files[1].objects["boundary_admin_level_7.shp"])
     const values = files[2];
     const wards = files[3];
@@ -30,6 +31,13 @@ Promise.all([
 
     const wardsMeters = parse.wards_meters(values, wards, formatTime);
 
+    console.log(wards_shp.features[1].properties["name:en"]);
+
+    const wards_name = (wards_shp.features).map(d => d.properties["name:en"])
+        .sort((a, b) => d3.ascending(a, b));
+
+    console.log(wards_name);
+
     // filter the grid to only those rectangles with a value
     const values_ids_true = test = d3.groupSort(values,
         d => d.cell_id, 
@@ -47,7 +55,6 @@ Promise.all([
     // 0 COLORS
     const scaleColor = d3.scaleThreshold()
         .domain([0.125, 5, 12, 17, 22])
-        // .domain([5, 12, 17, 22])
         .range(['#ffffff','#6BC6E3', '#3C9DB9', '#047690', '#004E67', '#002940'])
 
     // 1 CREATE AREA CHART ----
@@ -60,10 +67,13 @@ Promise.all([
     // 3 CREATE MAP ---
     const map = new mapboxMap(grid_ids_true, valuesByDate, dateExtent, formatDate, scaleColor, maxValue, wards_shp);
 
+    // 4 CREATE LEGEND ---
+    const legend = new mapLegend(wards_name, dateExtent, scaleColor, formatDate, map);
+
     // 4 CREATE SLIDER ----
     // needs time range from values
     // it will modify the other charts
-    const slider = new controlAnimation(dateExtent, years, months, areaChart, table, map, formatDate);
+    const slider = new controlAnimation(dateExtent, years, months, areaChart, table, map, legend);
     
 })
 .catch(function(error){
