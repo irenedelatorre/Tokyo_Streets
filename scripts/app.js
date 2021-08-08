@@ -94,6 +94,7 @@ Promise.all([
     window.onresize = function() {
         slider.resize();
         areaChart.resize();
+        table.resize();
     };
     
 })
