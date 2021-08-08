@@ -167,7 +167,6 @@ class controlAnimation {
     }
 
     step() {
-        console.log(this.timePointSlider, this.t);
         this.update();
         // if it goes to the end of the animation
         if (this.t >= this.range[1]) {
@@ -193,11 +192,9 @@ class controlAnimation {
     }
 
     resize(){
-        console.log('resize screen');
         const width = document.getElementById("buttons-div").clientWidth;
         this.width = width - this. margin.r - this.margin.l - this.margin.btn;
 
-        console.log(this.width, this.height);
         d3.select("#time-controls")
             .select("svg")
             .attr("width", this.width + this.margin.r + this.margin.l)
