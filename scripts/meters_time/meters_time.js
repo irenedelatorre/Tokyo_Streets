@@ -20,21 +20,20 @@ class meters_through_time {
             .append("svg")
             .attr("width", this.width + this.margin.r + this.margin.l)
             .attr("height", this.height + this.margin.t + this.margin.b);
-            
+
         // scales
         this.scaleX = d3.scaleTime()
             .domain(this.extentDate)
             .range([0, this.width]);
 
         this.extentValue = d3.extent(data, d => d[1]);
-    
+
         this.scaleY = d3.scaleLinear()
             .domain([0, this.extentValue[1]]).nice()
             .range([this.height, 0]);
 
         this.createAreaChart(this.years, "build");
         this.timeLine(this.extentDate[1]);
-
     }
 
     // creates the area chart
@@ -48,17 +47,16 @@ class meters_through_time {
                 } else {
                     return d3.timeFormat("%Y")(d);
                 }
-    
             })
             .tickPadding(8)
             .tickValues(years);
-    
+
         const axisY = d3.axisLeft()
             .scale(this.scaleY)
             .tickSize(-this.width)
             .ticks(6)
             .tickPadding(5);
-    
+
         // area function
         const area = d3.area()
             .x(d => this.scaleX(d[0]))
@@ -102,11 +100,11 @@ class meters_through_time {
             .data([this.data])
             .join("path")
             .attr("d", area);
-    
+
         this.plot
             .selectAll(".axis-x")
             .call(axisX);
-    
+
         this.plot
             .selectAll(".axis-y")
             .call(axisY);
@@ -121,7 +119,7 @@ class meters_through_time {
             .clamp(true);
 
         const formatDate = d3.timeFormat("%B %Y");
-        console.log(formatDate(date));
+
         this.plotTimeLine
             .selectAll("line")
             .data([date])
@@ -133,7 +131,9 @@ class meters_through_time {
 
         this.plotTimeLine
             .selectAll("text")
-            .data((this.data).filter(d => formatDate(d[0]) === formatDate(date)))
+            .data((this.data).filter(d =>
+                formatDate(d[0]) === formatDate(date)
+            ))
             .join("text")
             .text(d => `${format(d[1])} m`)
             .attr("x", scaleText(this.scaleX(date)))
@@ -141,8 +141,6 @@ class meters_through_time {
     }
 
     resize() {
-        console.log("resize chart");
-
         const width = document.getElementById("meters-time-plot").clientWidth;
         const height = document.getElementById("meters-time-plot").clientHeight;
         this.width = width - this.margin.r - this.margin.l;
