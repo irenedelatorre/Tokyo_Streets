@@ -63,6 +63,10 @@ Promise.all([
     // needs time range from values
     // it will modify the other charts
     const slider = new controlAnimation(dateExtent, years, months, areaChart, table, map, formatDate);
+
+    window.onresize = function() {
+        slider.resize();
+    };
     
 })
 .catch(function(error){
