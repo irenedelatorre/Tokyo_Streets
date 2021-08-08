@@ -151,27 +151,17 @@ class mapboxMap {
     }
 
     zoomToWard(wardName) {
-        console.log(this);
-        console.log(wardName);
-
         const selectedWard = (this.wards.features).filter( d => d.properties["name:en"] === wardName)[0];
-
-        console.log(selectedWard);
 
         let geometry = selectedWard.geometry.coordinates[0];
 
         if (selectedWard.geometry.coordinates.length > 1) {
-            const longest = d3.max(selectedWard.geometry.coordinates, d => d.length);
-            console.log(longest);
-            geometry = selectedWard.geometry.coordinates.filter(d => d.length === longest)[0][0];
+            const longest = d3.max(selectedWard.geometry.coordinates, d => d[0].length);
+            geometry = selectedWard.geometry.coordinates.filter(d => d[0].length === longest)[0][0];
         }
-
-        console.log(geometry)
 
         const bounds = this.getBounds(geometry);
 
         this.map.fitBounds(bounds);
-        console.log(bounds)
-        // Aogashima doesn't have geometry
     }
 }

@@ -4,7 +4,7 @@ class mapLegend {
         this.t = this.dateExtent[1];
         this.formatDate = formatDate;
         this.scaleColor = scaleColor;
-        this.wards_name = wards_name;
+        this.wards_name = wards_name.filter(d => d !== "Aogashima");
         this.map = map;
         this.select = d3.select("#wards-list");
         this.margin = {
