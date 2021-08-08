@@ -1,5 +1,5 @@
 class controlAnimation {
-    constructor(range, years, months, areaChart, table, map) {
+    constructor(range, years, months, areaChart, table, map, legend) {
         this.range = range;
         this.years = years;
         this.months = months;
@@ -7,15 +7,19 @@ class controlAnimation {
             t: 7,
             l: 15,
             r: 15,
-            b: 25
+            b: 25,
+            btn: 36 * 3 + 16
         };
-        this.width = document.getElementById("time-controls").clientWidth -this. margin.r - this.margin.l - 16;
-        this.height = document.getElementById("time-controls").clientHeight - this.margin.t - this.margin.b;
+        const width = document.getElementById("buttons-div").clientWidth;
+        const height = document.getElementById("time-controls").clientHeight;
+        this.width = width - this. margin.r - this.margin.l - this.margin.btn;
+        this.height = height - this.margin.t - this.margin.b;
         this.timePointSlider = range[1];
         this.t = this.timePointSlider;
         this.areaChart = areaChart;
         this.table = table;
         this.map = map;
+        this.legend = legend;
         this.animation = false;
         this.animationBtn = "play";
         this.nextBtn = d3.select("#skip_next");
@@ -66,13 +70,17 @@ class controlAnimation {
                 this.areaChart.timeLine(d);
                 this.table.update(d);
                 this.map.drawGrid(d);
-                this.map.updateLegendDate(d);
+                this.legend.updateLegendDate(d);
                 this.plotSlider.dispatch("input");
             });
 
         this.plotSlider
             .call(this.sliderTime);
+        
+        this.styleSlider();
+    }
 
+    styleSlider() {
         this.plotSlider.selectAll(".tick")
             .selectAll("line")
             .attr("y1", -9)
@@ -91,7 +99,9 @@ class controlAnimation {
         this.plotSlider  
             .selectAll(".parameter-value")
             .select("path")
-            .attr("d", "M-2.83-2.83h0A4,4,0,0,1,0-4,4,4,0,0,1,2.83-2.83h0A4,4,0,0,1,4,0,4,4,0,0,1,2.83,2.83h0A4,4,0,0,1,0,4,4,4,0,0,1-2.83,2.83h0A4,4,0,0,1-4,0,4,4,0,0,1-2.83-2.83Z")
+            .attr("d", "M-2.83-2.83h0A4,4,0,0,1,0-4,4,4,0,0,1,2.83-2.83h0A4," +
+                "4,0,0,1,4,0,4,4,0,0,1,2.83,2.83h0A4,4,0,0,1,0,4,4,4,0,0," +
+                "1-2.83,2.83h0A4,4,0,0,1-4,0,4,4,0,0,1-2.83-2.83Z")
             .style("fill", "#e02e0b")
             .style("stroke", "none");
     }
@@ -115,15 +125,14 @@ class controlAnimation {
                     if (this.t >= this.range[1]) {
                         this.t = this.range[0];
                     } else {
-                        this.t = new Date(this.t.setMonth(this.t.getMonth() + 1))
+                        const month = this.t.getMonth();
+                        this.t = new Date(this.t.setMonth(month + 1));
                     }
 
-                    // console.log( this.timePointSlider);
                     this.timer = setInterval(() => this.step(), 1000)
 
                 } else if (this.animationBtn === "pause") {
-                    btn
-                        .attr("d", "M8 5v14l11-7z");
+                    btn.attr("d", "M8 5v14l11-7z");
 
                     this.animation = false;
                     this.animationBtn = "play";
@@ -159,7 +168,6 @@ class controlAnimation {
     }
 
     step() {
-        console.log(this.timePointSlider, this.t);
         this.update();
         // if it goes to the end of the animation
         if (this.t >= this.range[1]) {
@@ -184,4 +192,29 @@ class controlAnimation {
             .value([this.t]);
     }
 
+    resize(){
+        const width = document.getElementById("buttons-div").clientWidth;
+        this.width = width - this. margin.r - this.margin.l - this.margin.btn;
+
+        d3.select("#time-controls")
+            .select("svg")
+            .attr("width", this.width + this.margin.r + this.margin.l)
+            .select(".slider-years")
+            .attr("transform", `translate(${this.margin.l}, ${this.margin.t})`);
+
+        this.sliderTime
+            .width(this.width)
+            .tickFormat(d => {
+                if (this.width < 300) {
+                    return d3.timeFormat("%y")(d);
+                } else {
+                    return d3.timeFormat("%Y")(d);
+                }
+            });
+
+        this.plotSlider
+            .call(this.sliderTime);
+
+        this.styleSlider();
+    }
 }
