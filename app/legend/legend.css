@@ -38,3 +38,29 @@
 .legend-item-line {
     stroke: #222222;
 }
+
+.footnote {
+    font-size: 0.875em;
+    line-height: 1.25em
+}
+
+#wards-list {
+    border: 1px solid #E02E0B;
+    padding: 0.5em;
+    font-weight: bold;
+    color: #e02e0b;
+    margin: 0.5em 0 1em 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+#wards-list:hover, #wards-list:focus {
+    color: #004E67;
+    border: 1px solid #004E67;
+}
+
+.map-legend label {
+    font-weight: normal;
+    margin: 0.5em 0 0;
+    width: 100%;
+}
