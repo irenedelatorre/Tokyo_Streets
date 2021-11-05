@@ -116,23 +116,28 @@ footer .position {
 
 footer a {
     color: var(--background-plots) !important;
-    font-weight: 900;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
 
 footer a:hover, footer a:focus {
     color: var(--background-plots) !important;
+    opacity: 0.9;
     text-decoration: underline;
 }
 
 footer .logo_uni {
-    height: 45px;
-    margin-top: -6px;
+    height: 4em;
     margin-right: 5px;
+    margin-top: 2em;
 }
 
 footer .logo_usl {
     width: 60px;
     margin-top: 0.5em;
+}
+
+footer img:hover, footer img:focus {
+    opacity: 0.75;
 }
