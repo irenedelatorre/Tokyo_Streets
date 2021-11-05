@@ -56,6 +56,7 @@ class controlAnimation {
             })
             .tickValues(this.years)
             .default(this.range[1])
+            .displayValue(false)
             .on("drag", (d) => {
                 this.t = d;
                 if (this.animation === true) {
