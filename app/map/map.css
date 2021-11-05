@@ -13,7 +13,7 @@
 svg .background {
     stroke: none;
     /* fill: #e6e6e6 */
-    fill: white;
+    fill: var(--background-color);
 }
 
 #map .leaflet-tile-pane {
@@ -42,8 +42,8 @@ svg .background {
 }
 
 .leaflet-control-zoomhome-home svg .icon {
-    fill: #E02E0B;
+    fill: var(--main-color);
 }
 .leaflet-control-zoomhome-home svg:hover .icon {
-    fill: #004E67;
+    fill: var(--hover-color);
 }

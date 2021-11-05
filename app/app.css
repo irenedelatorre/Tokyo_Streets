@@ -1,14 +1,24 @@
 /* Main */
+:root {
+  --text: #222222;
+  --background-color: #f2f2f2;
+  --main-color: #E02E0B;
+  --hover-color: #004E67;
+  --background-plots: #fff;
+  --text-axis: #656565;
+  --line-axis: #ebebeb;
+}
+
 body {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 16px;
     line-height: 1.375em;
-    color: #222222;
-    background: #F2F2F2;
+    color: var(--text);
+    background:  var(--background-color);
 }
 
 h1 {
-    color: #FFFFFF;
+    color: var(--background-plots);
     font-weight: 900;
     font-size: 1.75em;
     line-height: 1.4em;
@@ -27,17 +37,37 @@ p {
 }
 
 a {
-    color: #E02E0B !important;
+    color: var(--main-color) !important;
 }
 
 a:hover, a:focus {
-    color: #004E67 !important;
+    color: var(--hover-color) !important;
 }
 
 /* NAV */
 nav {
-    background-color: #E02E0B;
+    background-color: var(--main-color);
     padding: 0.8em 2em;
+}
+
+nav h1 {
+    width: 50%;
+}
+
+nav a {
+    width: 50%;
+    color: var(--background-plots) !important;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: right;
+    padding-top: 0.9em;
+    font-size: 0.875em;
+}
+
+nav a:focus, nav a:hover {
+    color: var(--background-plots) !important;
+    text-decoration: underline;
 }
 
 /* container-fluid (charts and map) */
@@ -46,7 +76,7 @@ nav {
 }
 
 .charts div {
-    background-color: #FFFFFF;
+    background-color: var(--background-plots);
     padding: 1em;
     margin: 1em 0;
 }
@@ -63,4 +93,46 @@ nav {
 
 div {
     /* border: 1px solid black; */
+}
+
+/* footer */
+footer {
+    background-color: var(--main-color);
+    color: var(--background-plots);
+}
+
+footer h2 {
+    font-weight: 900;
+}
+
+footer .author {
+    font-weight: 700;
+}
+
+footer .position {
+    font-weight: 300;
+    font-style: italic;
+}
+
+footer a {
+    color: var(--background-plots) !important;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+footer a:hover, footer a:focus {
+    color: var(--background-plots) !important;
+    text-decoration: underline;
+}
+
+footer .logo_uni {
+    height: 45px;
+    margin-top: -6px;
+    margin-right: 5px;
+}
+
+footer .logo_usl {
+    width: 60px;
+    margin-top: 0.5em;
 }

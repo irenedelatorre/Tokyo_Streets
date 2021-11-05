@@ -11,12 +11,13 @@ button {
 }
 
 .buttons svg .icon-btn {
-    fill: #e02e0b;
+    fill:  var(--main-color);
 }
 
-button:hover svg .icon-btn, button:focus svg .icon-btn {
-    fill: #004E67;
-    /* background-color: #e02e0b; */
+button:hover svg .icon-btn,
+button:focus svg .icon-btn {
+    fill: var(--hover-color);
+    /* background-color:  var(--main-color); */
 }
 
 #time-controls {
@@ -26,7 +27,7 @@ button:hover svg .icon-btn, button:focus svg .icon-btn {
 }
 
 #time-controls svg text {
-    fill: #222222;
+    fill: var(--text);
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 12px;
 }
@@ -43,9 +44,12 @@ button:hover svg .icon-btn, button:focus svg .icon-btn {
 }
 
 #time-controls .tick line {
-    stroke: #222222;
+    stroke: var(--text);
 }
 
-.parameter-value:hover, .parameter-value:focus, .parameter-value path:hover, .parameter-value path:focus {
-    fill: #004E67 !important;
+.parameter-value:hover,
+.parameter-value:focus,
+.parameter-value path:hover,
+.parameter-value path:focus {
+    fill: var(--hover-color) !important;
 }

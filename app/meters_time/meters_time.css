@@ -10,11 +10,11 @@
 }
 
 #meters-time-plot .axis-y text {
-    color: #656565;
+    color: var(--text-axis);
 }
 
 #meters-time-plot .axis-x text {
-    color: #222222;
+    color: var(--text);
 }
 
 
@@ -23,21 +23,21 @@
 }
 
 #meters-time-plot .axis-y line {
-    stroke: #EBEBEB;
+    stroke: var(--line-axis);
     mix-blend-mode: multiply;
     stroke-width: 1px;
     stroke-dasharray: 2px;
 }
 
 #meters-time-plot .area path {
-    fill: #E02E0B;
+    fill: var(--main-color);
     stroke: none;
     opacity: 0.2;
     mix-blend-mode: multiply;
 }
 
 #meters-time-plot .timeLine line {
-    stroke: #222222;
+    stroke: var(--text);
     stroke-width: 2px;
 }
 

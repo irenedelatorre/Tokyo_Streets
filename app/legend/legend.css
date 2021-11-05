@@ -1,7 +1,7 @@
 
 /* map legend */
 .map-legend {
-    background-color: white;
+    background-color: var(--background-plots);
     width: 20%;
     max-width: 328px;
     position: absolute;
@@ -38,7 +38,7 @@
 }
 
 .legend-item-line {
-    stroke: #222222;
+    stroke: var(--text);
 }
 
 .footnote {
@@ -47,18 +47,18 @@
 }
 
 #wards-list {
-    border: 1px solid #E02E0B;
+    border: 1px solid var(--main-color);
     padding: 0.5em;
     font-weight: bold;
-    color: #e02e0b;
+    color: var(--main-color);
     margin: 0.5em 0 1em 0;
     cursor: pointer;
     width: 100%;
 }
 
 #wards-list:hover, #wards-list:focus {
-    color: #004E67;
-    border: 1px solid #004E67;
+    color: var(--hover-color);
+    border: 1px solid var(--hover-color);
 }
 
 .map-legend label {
